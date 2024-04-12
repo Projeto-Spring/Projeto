@@ -2,15 +2,22 @@ package com.projeto.model;
 
 import java.sql.Date;
 
+// Classe Presenca
 public class Presenca {
     private int idPresenca;
-    private int matricula;
+    private int idAluno;
     private Date dataPresenca;
     private String situacao;
 
-    public Presenca() {
+    // Construtor
+    public Presenca(int idPresenca, int idAluno, Date dataPresenca, String situacao) {
+        this.idPresenca = idPresenca;
+        this.idAluno = idAluno;
+        this.dataPresenca = dataPresenca;
+        this.situacao = situacao;
     }
 
+    // Métodos getters e setters
     public int getIdPresenca() {
         return idPresenca;
     }
@@ -19,12 +26,12 @@ public class Presenca {
         this.idPresenca = idPresenca;
     }
 
-    public int getmatricula() {
-        return matricula;
+    public int getIdAluno() {
+        return idAluno;
     }
 
-    public void setmatricula(int matricula) {
-        this.matricula = matricula;
+    public void setIdAluno(int idAluno) {
+        this.idAluno = idAluno;
     }
 
     public Date getDataPresenca() {

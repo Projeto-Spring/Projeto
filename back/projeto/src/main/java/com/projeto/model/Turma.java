@@ -2,24 +2,25 @@ package com.projeto.model;
 
 import java.util.List;
 
+// Classe Turma
 public class Turma {
-    private Long idTurma;
+    private int idTurma;
     private String serie;
-    private List<Long> alunosIds; // IDs dos alunos
-    private Long professorId;
+    private int idProfessor;
 
-    public Turma(Long idTurma, String serie, List<Long> alunosIds, Long professorId) {
+    // Construtor
+    public Turma(int idTurma, String serie, int idProfessor) {
         this.idTurma = idTurma;
         this.serie = serie;
-        this.alunosIds = alunosIds;
-        this.professorId = professorId;
+        this.idProfessor = idProfessor;
     }
 
-    public Long getIdTurma() {
+    // Métodos getters e setters
+    public int getIdTurma() {
         return idTurma;
     }
 
-    public void setIdTurma(Long idTurma) {
+    public void setIdTurma(int idTurma) {
         this.idTurma = idTurma;
     }
 
@@ -31,19 +32,11 @@ public class Turma {
         this.serie = serie;
     }
 
-    public List<Long> getAlunosIds() {
-        return alunosIds;
+    public int getIdProfessor() {
+        return idProfessor;
     }
 
-    public void setAlunosIds(List<Long> alunosIds) {
-        this.alunosIds = alunosIds;
-    }
-
-    public Long getProfessorId() {
-        return professorId;
-    }
-
-    public void setProfessorId(Long professorId) {
-        this.professorId = professorId;
+    public void setIdProfessor(int idProfessor) {
+        this.idProfessor = idProfessor;
     }
 }

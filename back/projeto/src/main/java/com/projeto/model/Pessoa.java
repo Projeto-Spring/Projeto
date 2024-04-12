@@ -1,27 +1,32 @@
 package com.projeto.model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
+// Classe Pessoa
 public class Pessoa {
-    private Long idPessoa;
+    private int idPessoa;
     private String nome;
-    private Timestamp dataNascimento;
+    private Date dataNascimento;
     private String cpf;
+    private String tipoUsuario;
+    private String senha;
 
     // Construtor
-    public Pessoa(Long idPessoa, String nome, Timestamp dataNascimento, String cpf) {
+    public Pessoa(int idPessoa, String nome, Date dataNascimento, String cpf, String tipoUsuario, String senha) {
         this.idPessoa = idPessoa;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
+        this.tipoUsuario = tipoUsuario;
+        this.senha = senha;
     }
 
-    // Getters e setters
-    public Long getIdPessoa() {
+    // Métodos getters e setters
+    public int getIdPessoa() {
         return idPessoa;
     }
 
-    public void setIdPessoa(Long idPessoa) {
+    public void setIdPessoa(int idPessoa) {
         this.idPessoa = idPessoa;
     }
 
@@ -33,11 +38,11 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public Timestamp getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Timestamp dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -47,5 +52,21 @@ public class Pessoa {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

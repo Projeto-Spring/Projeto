@@ -2,21 +2,24 @@ package com.projeto.model;
 
 import java.sql.Timestamp;
 
+// Classe Professor
 public class Professor extends Pessoa {
-    private Long idProfessor;
+    private int idProfessor;
     private String disciplina;
 
-    public Professor(Long idPessoa, String nome, Timestamp dataNascimento, String cpf, Long idProfessor, String disciplina) {
-        super(idPessoa, nome, dataNascimento, cpf);
+    // Construtor
+    public Professor(int idProfessor, int idPessoa, String nome, Date dataNascimento, String cpf, String tipoUsuario, String senha, String disciplina) {
+        super(idPessoa, nome, dataNascimento, cpf, tipoUsuario, senha);
         this.idProfessor = idProfessor;
         this.disciplina = disciplina;
     }
 
-    public Long getIdProfessor() {
+    // Métodos getters e setters
+    public int getIdProfessor() {
         return idProfessor;
     }
 
-    public void setIdProfessor(Long idProfessor) {
+    public void setIdProfessor(int idProfessor) {
         this.idProfessor = idProfessor;
     }
 

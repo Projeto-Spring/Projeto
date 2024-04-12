@@ -1,23 +1,20 @@
 package com.projeto.model;
 
-import java.sql.Timestamp;
-
 public class Aluno extends Pessoa {
-    private String matricula;
+    private int idAluno;
 
-    // Construtor apenas com matrícula, sem idAluno
-    public Aluno(Long idPessoa, String nome, Timestamp dataNascimento, String cpf, String matricula) {
-        super(idPessoa, nome, dataNascimento, cpf); // Chamada ao construtor da classe base, Pessoa
-        this.matricula = matricula;
+    // Construtor
+    public Aluno(int idAluno, int idPessoa, String nome, Date dataNascimento, String cpf, String tipoUsuario, String senha) {
+        super(idPessoa, nome, dataNascimento, cpf, tipoUsuario, senha);
+        this.idAluno = idAluno;
     }
 
-    // Getter para matricula
-    public String getMatricula() {
-        return matricula;
+    // Métodos getters e setters
+    public int getIdAluno() {
+        return idAluno;
     }
 
-    // Setter para matricula
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setIdAluno(int idAluno) {
+        this.idAluno = idAluno;
     }
 }
