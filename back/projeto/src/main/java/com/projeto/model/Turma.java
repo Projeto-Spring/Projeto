@@ -1,6 +1,5 @@
 package com.projeto.model;
 
-import java.util.List;
 
 // Classe Turma
 public class Turma {

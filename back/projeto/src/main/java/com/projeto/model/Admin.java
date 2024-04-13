@@ -1,5 +1,7 @@
 package com.projeto.model;
 
+import java.sql.Date;
+
 // Classe Admin
 public class Admin extends Pessoa {
     private int idAdmin;

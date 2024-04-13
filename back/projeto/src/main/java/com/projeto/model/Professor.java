@@ -1,6 +1,7 @@
 package com.projeto.model;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+
 
 // Classe Professor
 public class Professor extends Pessoa {
