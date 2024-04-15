@@ -5,8 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.projeto.model.Pessoa;
+import com.projeto.Util.ValidaSenha;
 import com.projeto.repository.JDBC.PessoaRepositoryJDBC;
+import com.projeto.repository.PessoaRepository;
 
 @Controller
 public class PessoaController {
@@ -26,6 +28,10 @@ public class PessoaController {
                 // Se não houver senha, redireciona para a página de criação de senha
                 model.addAttribute("cpf", cpf);
                 return "criarSenha.html";
+                if (ValidaSenha.validaSenha(senha)){
+                    pessoaRepository.save(pessoa);
+                    return "home.html";
+                }
             } else {
                 // Se a senha estiver definida, redireciona para a página de login com senha
                 model.addAttribute("cpf", cpf);
@@ -41,6 +47,6 @@ public class PessoaController {
     @GetMapping("/criarSenha")
     public String showCreatePasswordPage(@RequestParam String cpf, Model model) {
         model.addAttribute("cpf", cpf);
-        return "criarSenha"; // Retornar a página de criação de senha
+        return "criarSenhja"; // Retornar a página de criação de senha
     } 
 }

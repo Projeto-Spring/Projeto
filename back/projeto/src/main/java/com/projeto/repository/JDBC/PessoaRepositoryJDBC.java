@@ -20,8 +20,10 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
 
     @Override
     public void save(Pessoa pessoa){
- 
+        String sql = "INSERT INTO pessoa (senha) VALUES (?)";
+        jdbcTemplate.update(sql, pessoa.getSenha());
     }
+
 
     @Override
     public List<Pessoa> findAll() {
