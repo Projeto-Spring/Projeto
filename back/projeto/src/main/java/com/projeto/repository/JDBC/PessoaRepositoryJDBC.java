@@ -47,12 +47,6 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
     }
 
     @Override
-    public void updateSenha(String cpf, String novaSenha) {
-        String sql = "UPDATE pessoa SET senha = ? WHERE cpf = ?";
-        jdbcTemplate.update(sql, novaSenha, cpf);
-    }
-
-    @Override
     public String buscarSenhaPorCpf(String cpf) {
         String sql = "SELECT senha FROM pessoa WHERE cpf = ?";
         try {

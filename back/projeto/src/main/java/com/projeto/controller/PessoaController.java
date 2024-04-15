@@ -43,5 +43,5 @@ public class PessoaController {
         model.addAttribute("cpf", cpf);
         return "criarSenha"; // Retornar a página de criação de senha
     }
-
+    
 }

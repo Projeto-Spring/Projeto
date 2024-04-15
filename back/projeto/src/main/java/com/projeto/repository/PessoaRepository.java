@@ -10,5 +10,4 @@ public interface PessoaRepository {
     void update(int idPessoa, Pessoa pessoa);
     void delete(int idPessoa);
     String buscarSenhaPorCpf(String cpf);
-    void updateSenha(String cpf, String novaSenha); // Método renomeado
 }
