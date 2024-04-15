@@ -42,6 +42,5 @@ public class PessoaController {
     public String showCreatePasswordPage(@RequestParam String cpf, Model model) {
         model.addAttribute("cpf", cpf);
         return "criarSenha"; // Retornar a página de criação de senha
-    }
-    
+    } 
 }
