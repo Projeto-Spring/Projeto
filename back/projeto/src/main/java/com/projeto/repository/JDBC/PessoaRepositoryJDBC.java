@@ -44,10 +44,14 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
 
     @Override
     public boolean verificarCpf(String cpf) {
-        String sql = "SELECT COUNT(*) FROM pessoa WHERE cpf = ?";
-        int count = jdbcTemplate.queryForObject(sql, Integer.class, cpf);
+        // Remover pontos, traços e outros caracteres não numéricos do CPF
+        String cpfSemFormatacao = cpf.replaceAll("[^0-9]", "");
+    
+        String sql = "SELECT COUNT(*) FROM pessoa WHERE REPLACE(REPLACE(cpf, '.', ''), '-', '') = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, cpfSemFormatacao);
         return count > 0;
     }
+    
 
     @Override
     public String buscarSenhaPorCpf(String cpf) {
