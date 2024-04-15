@@ -12,16 +12,14 @@
 <body>
     <div class="container">
         <h1>Criar conta</h1>
-        <form action="/updateSenha" method="POST">
+        <form action="/salvarSenha" method="POST">
             <div class="form-group">
                 <label for="password">Insira sua senha</label>
-                <input type="password" id="password" name="password" required>
-                <label for="confirmPassword">Confirme sua senha</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <input type="password" id="password" name="senha" required>
             </div>
+            <input type="hidden" name="cpf" value="${cpf}">
             <button type="submit">Enviar</button>
-            <!-- Link para recuperação de senha -->
-        </form>
+        </form>        
     </div>
 </body>
  

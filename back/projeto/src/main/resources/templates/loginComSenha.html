@@ -12,10 +12,11 @@
 <body>
     <div class="container">
         <h1>Login</h1>
-        <form action="/updateSenha" method="POST">
+        <form action="/home" method="GET">
+            <input type="hidden" name="cpf" value="${cpf}">
             <div class="form-group">
                 <label for="password">Insira sua senha</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="senha" required>
             </div>
             <button type="submit">Enviar</button>
         </form>
