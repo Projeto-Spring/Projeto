@@ -20,8 +20,7 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
 
     @Override
     public void save(Pessoa pessoa){
-        String sql = "INSERT INTO pessoa (nome, data_nascimento, cpf, tipo_usuario, senha) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, pessoa.getNome(), pessoa.getDataNascimento(), pessoa.getCpf(), pessoa.getTipoUsuario(), pessoa.getSenha());
+
     }
     
 
@@ -33,9 +32,12 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
     }
 
     @Override
-    public void update(int idPessoa, Pessoa pessoa) {
-
+    public void update(String cpf, String novaSenha) {
+        String sql = "UPDATE pessoa SET senha = ? WHERE cpf = ?";
+        jdbcTemplate.update(sql, novaSenha, cpf);
     }
+    
+    
 
     @Override
     public void delete(int idPessoa) {
@@ -65,4 +67,9 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
         }
     }
 
+    @Override
+    public void atualizarSenhaPorCpf(String cpf, String novaSenha) {
+        String sql = "UPDATE pessoa SET senha = ? WHERE cpf = ?";
+        jdbcTemplate.update(sql, novaSenha, cpf);
+    }
 }

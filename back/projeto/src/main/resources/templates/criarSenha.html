@@ -10,14 +10,11 @@
 <body>
     <div class="container">
         <h1>Criar conta</h1>
-        <form action="" method="POST">
-            <div class="form-group">
-                <label for="password">Insira sua senha</label>
-                <input type="password" id="password" name="senha" required>
-            </div>
-            <input type="hidden" name="cpf" value="${cpf}">
-            <button type="submit">Enviar</button>
-        </form>        
+        <form action="/atualizarSenha" method="post">
+            CPF: <input type="text" name="cpf"><br>
+            Nova Senha: <input type="password" name="novaSenha"><br>
+            <input type="submit" value="Atualizar Senha">
+        </form>            
     </div>
 </body>
 </html>

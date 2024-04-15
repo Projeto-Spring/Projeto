@@ -7,7 +7,8 @@ public interface PessoaRepository {
     boolean verificarCpf(String cpf);
     void save(Pessoa pessoa);
     List<Pessoa> findAll();
-    void update(int idPessoa, Pessoa pessoa);
+    void update(String cpf, String novaSenha);
     void delete(int idPessoa);
     String buscarSenhaPorCpf(String cpf);
+    void atualizarSenhaPorCpf(String cpf, String novaSenha);
 }

@@ -27,19 +27,23 @@ public class PessoaController {
         if (pessoaRepository.verificarCpf(cpf)) {
             // Verifica se a senha está definida para o CPF
             String senha = pessoaRepository.buscarSenhaPorCpf(cpf);
-            if (senha == null) {
+            if (senha != null) {
+                // Se a senha estiver definida, redireciona para a página de login com senha
+                model.addAttribute("cpf", cpf);
+                return "loginComSenha.html";
+            } else {
                 // Se não houver senha, redireciona para a página de criação de senha
                 model.addAttribute("cpf", cpf);
                 return "criarSenha.html";
             }
-            // Se a senha estiver definida, redireciona para a página de login com senha
-            model.addAttribute("cpf", cpf);
-            return "loginComSenha.html";
+        } else {
+            // Se o CPF não existir, exibe uma mensagem de erro
+            model.addAttribute("error", "CPF não cadastrado");
+            return "login";
         }
-        // Se o CPF não existir, exibe uma mensagem de erro
-        model.addAttribute("error", "CPF não cadastrado");
-        return "login";
     }
+    
+    
 
     @GetMapping("/criarSenha")
     public String showCreatePasswordPage(@RequestParam String cpf, Model model) {
@@ -47,25 +51,13 @@ public class PessoaController {
         return "criarSenha"; // Retornar a página de criação de senha
     }
 
-    @PostMapping("/salvarSenha")
-    public String savePassword(@RequestParam String cpf, @RequestParam String senha, Model model) {
-        // Verifica se o CPF existe no banco de dados
-        if (pessoaRepository.verificarCpf(cpf)) {
-            // Cria uma nova instância de Pessoa com os dados fornecidos
-            Pessoa pessoa = new Pessoa(0, "", null, cpf, "", senha);
-
-            // Salva a senha no banco de dados
-            pessoaRepository.save(pessoa);
-
-            // Redireciona para a página de login com a senha recém-criada
-            model.addAttribute("cpf", cpf);
-            return "loginComSenha.html";
-        } else {
-            // Se o CPF não existir, exibe uma mensagem de erro
-            model.addAttribute("error", "CPF não cadastrado1");
-            return "login";
-        }
+    @PostMapping("/atualizarSenha")
+    public String atualizarSenha(@RequestParam("cpf") String cpf, @RequestParam("novaSenha") String novaSenha) {
+        pessoaRepository.update(cpf, novaSenha);
+        return "redirect:/home";
     }
+    
+
 
     @GetMapping("/home")
     public String homePage(Model model) {
