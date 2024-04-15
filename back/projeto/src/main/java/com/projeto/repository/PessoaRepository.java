@@ -9,5 +9,6 @@ public interface PessoaRepository {
     List<Pessoa> findAll();
     void update(int idPessoa, Pessoa pessoa);
     void delete(int idPessoa);
-    String buscarSenhaPorCpf(String cpf); // Método adicionado
+    String buscarSenhaPorCpf(String cpf);
+    void updateSenha(String cpf, String novaSenha); // Método renomeado
 }

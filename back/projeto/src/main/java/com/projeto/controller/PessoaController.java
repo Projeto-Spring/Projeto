@@ -44,9 +44,4 @@ public class PessoaController {
         return "criarSenha"; // Retornar a página de criação de senha
     }
 
-    @GetMapping("/loginComSenha")
-    public String showLoginWithPasswordPage(@RequestParam String cpf, Model model) {
-        model.addAttribute("cpf", cpf);
-        return "loginComSenha"; // Retornar a página de login com senha
-    }
 }
