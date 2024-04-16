@@ -1,20 +1,23 @@
 package com.projeto.model;
 
-
 // Classe Turma
 public class Turma {
     private int idTurma;
     private String serie;
     private int idProfessor;
+    private String disciplina;
+    
+    // Construtor padrão sem argumentos
+    public Turma() {
+    }
 
-    // Construtor
-    public Turma(int idTurma, String serie, int idProfessor) {
+    public Turma(int idTurma, String serie, int idProfessor, String disciplina) {
         this.idTurma = idTurma;
         this.serie = serie;
         this.idProfessor = idProfessor;
+        this.disciplina = disciplina;
     }
 
-    // Métodos getters e setters
     public int getIdTurma() {
         return idTurma;
     }
@@ -38,4 +41,13 @@ public class Turma {
     public void setIdProfessor(int idProfessor) {
         this.idProfessor = idProfessor;
     }
+
+    public String getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
+    }
+
 }

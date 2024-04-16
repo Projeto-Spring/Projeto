@@ -1,6 +1,7 @@
 package com.projeto.controller;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -270,6 +271,7 @@ public class PessoaController {
             return "login";
         }
     }
+
     @GetMapping("/adminCadastrarTurma")
     public String adminCadastrarTurma(Model model) {
         return "adminCadastrarTurma";
@@ -277,18 +279,62 @@ public class PessoaController {
 
     @PostMapping("/validarCadastroTurma")
     public String validarCadastroTurma(@RequestParam String serie,
-                                       @RequestParam String cpf,
-                                       HttpSession session, Model model) {
-        if (pessoaRepository.verificarCpfProfessor(cpf)){
+            @RequestParam String cpf,
+            HttpSession session, Model model) {
+        // Verifica se o CPF do professor existe no banco de dados
+        if (pessoaRepository.verificarCpfProfessor(cpf)) {
+            // Obtém o ID do professor com base no CPF
+            int idProfessor = pessoaRepository.obterIdProfessorPorCpf(cpf);
+
+            // Obtém a disciplina do professor com base no CPF
+            String disciplina = pessoaRepository.obterDisciplinaPorCpf(cpf);
+
+            // Define o CPF, o ID do professor e a disciplina na sessão
             session.setAttribute("cpf", cpf);
-            Turma turma = new Turma(0,serie,0);
+            session.setAttribute("idProfessor", idProfessor);
+            session.setAttribute("disciplina", disciplina);
+
+            // Cria uma nova turma associada ao professor
+            Turma turma = new Turma(0, serie, idProfessor, disciplina);
+
+            // Salva a turma no banco de dados
             pessoaRepository.save(turma);
-            return"redirect:/homeAdmin";
-        }
-        else {
-            // SE NAO FOR ENCONTRADO O CPF DO PROFESSOR
+
+            // Redireciona para a página de administrador
+            return "redirect:/homeAdmin";
+        } else {
+            // Se o CPF do professor não for encontrado, exibe uma mensagem de erro
             model.addAttribute("error", "CPF do professor não encontrado");
             return "login";
         }
     }
+
+    @GetMapping("/exibirTurmasProfessor")
+    public String mostrarTurmasDoProfessor(Model model, HttpSession session) {
+        String cpfLogado = (String) session.getAttribute("cpf");
+        
+        // Verifica se o CPF recuperado da sessão é nulo
+        if (cpfLogado == null) {
+            // Adiciona uma mensagem de erro ao modelo
+            model.addAttribute("erro", "CPF do professor não encontrado na sessão.");
+            return "error"; // Por exemplo, redireciona para uma página de erro
+        }
+        
+        // Adiciona o CPF do professor ao modelo para alerta
+        model.addAttribute("cpfLogado", cpfLogado);
+        
+        // Imprime o CPF para verificar se está sendo recuperado corretamente
+        System.out.println("CPF do professor logado: " + cpfLogado);
+        
+        // Recupera as turmas do professor
+        List<Turma> turmas = pessoaRepository.findTurmasByProfessorCpf(cpfLogado);
+        
+        // Adiciona as turmas ao modelo
+        model.addAttribute("turmas", turmas);
+        
+        return "exibirTurmasProfessor";
+    }
+    
+    
+
 }

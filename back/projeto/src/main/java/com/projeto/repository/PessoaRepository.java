@@ -23,4 +23,7 @@ public interface PessoaRepository {
     String buscarTipoUsuarioPorCpf(String cpf);
     boolean verificarCpfProfessor(String cpf);
     void save (Turma turma);
+    int obterIdProfessorPorCpf(String cpf);
+    String obterDisciplinaPorCpf(String cpf);
+    List<Turma> findTurmasByProfessorCpf(String cpf);
 }
