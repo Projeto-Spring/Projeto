@@ -11,4 +11,5 @@ public interface PessoaRepository {
     void delete(int idPessoa);
     String buscarSenhaPorCpf(String cpf);
     void atualizarSenhaPorCpf(String cpf, String novaSenha);
+    boolean validarSenha(String cpf, String senha);
 }

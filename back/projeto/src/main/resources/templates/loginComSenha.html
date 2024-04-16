@@ -12,14 +12,14 @@
 <body>
     <div class="container">
         <h1>Login</h1>
-        <form action="/home" method="GET">
+        <form action="/validarSenha" method="POST">
             <input type="hidden" name="cpf" value="${cpf}">
             <div class="form-group">
                 <label for="password">Insira sua senha</label>
                 <input type="password" id="password" name="senha" required>
             </div>
             <button type="submit">Enviar</button>
-        </form>
+        </form>                                 
     </div>
 </body>
 </html>

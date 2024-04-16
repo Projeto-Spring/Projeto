@@ -65,4 +65,28 @@ public class PessoaController {
     public String homePage(Model model) {
         return "home";
     }
+
+    @PostMapping("/validarSenha")
+    public String validarSenha(@RequestParam("senha") String senha, HttpSession session, Model model) {
+        // Obtém o CPF da sessão
+        String cpf = (String) session.getAttribute("cpf");
+    
+        // Verifica se o CPF está presente na sessão
+        if (cpf == null) {
+            // Se o CPF não estiver na sessão, redireciona para a página de login
+            return "login";
+        }
+    
+        // Se a senha for válida, redireciona para a página home
+        if (pessoaRepository.validarSenha(cpf, senha)) {
+            return "redirect:/home";
+        } else {
+            // Se a senha for incorreta, exibe uma mensagem de erro na página de login
+            model.addAttribute("error", "Senha incorreta");
+            model.addAttribute("cpf", cpf); // Adiciona o CPF novamente ao modelo
+            return "login";
+        }
+    }
+    
+
 }
