@@ -21,6 +21,11 @@ public class PessoaController {
         this.pessoaRepository = pessoaRepository;
     }
 
+    @GetMapping("/")
+    public String primeiraPagina(Model model) {
+        return "login";
+    }
+
     @PostMapping("/login")
     public String login(@RequestParam String cpf, HttpSession session, Model model) {
         // Verifica se o CPF existe no banco de dados
@@ -144,6 +149,7 @@ public class PessoaController {
             @RequestParam String tipoUsuario,
             HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
+        @SuppressWarnings("unused")
         String cpfLogado = (String) session.getAttribute("cpf");
 
         // Verifica se todos os parâmetros necessários estão presentes
