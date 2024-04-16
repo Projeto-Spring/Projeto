@@ -138,36 +138,36 @@ public class PessoaController {
     }
 
     @PostMapping("/validarCadastro")
-    public String validarCadastro(@RequestParam String nome, 
-                                  @RequestParam Date data_nascimento, 
-                                  @RequestParam String CPF, 
-                                  @RequestParam String tipoUsuario, 
-                                  HttpSession session, Model model) {
+    public String validarCadastro(@RequestParam String nome,
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
         String cpfLogado = (String) session.getAttribute("cpf");
-    
+
         // Verifica se todos os parâmetros necessários estão presentes
-        if (nome != null && data_nascimento != null && CPF != null && tipoUsuario != null) {
+        if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             // Verifica se o CPF já existe no banco de dados
-            if (!pessoaRepository.verificarCpf(CPF)) {
+            if (!pessoaRepository.verificarCpf(cpf)) {
                 // O CPF não existe, então podemos inserir o novo usuário na base de dados
                 // Crie uma instância de Pessoa com os dados do formulário
-                Pessoa pessoa = new Pessoa(0, nome, data_nascimento, CPF, tipoUsuario, null);
+                Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
                 // Insere a nova pessoa na base de dados
                 pessoaRepository.save(pessoa);
-                
+
                 // Redireciona para a página de sucesso após o cadastro
-                return "redirect:/cadastroSucesso";
+                return "redirect:/homeAdmin";
             } else {
                 // Se o CPF já existir, exibe uma mensagem de erro
                 model.addAttribute("error", "CPF já cadastrado");
-                return "cadastro";
+                return "login";
             }
         } else {
             // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
             model.addAttribute("error", "Todos os campos são obrigatórios");
-            return "cadastro";
+            return "login";
         }
     }
-    
+
 }
