@@ -77,16 +77,30 @@ public class PessoaController {
             return "login";
         }
     
-        // Se a senha for válida, redireciona para a página home
+        // Verifica se a senha é válida para o CPF fornecido
         if (pessoaRepository.validarSenha(cpf, senha)) {
-            return "redirect:/home";
+            // Obtém o tipo de usuário associado ao CPF
+            String tipoUsuario = pessoaRepository.buscarTipoUsuarioPorCpf(cpf);
+    
+            // Redireciona com base no tipo de usuário
+            switch (tipoUsuario) {
+                case "Aluno":
+                    return "homeAluno"; // Redireciona para a página do aluno
+                case "Professor":
+                    return "homeProfessor"; // Redireciona para a página do professor
+                case "Admin":
+                    return "homeAdmin"; // Redireciona para a página do administrador
+                default:
+                    // Se o tipo de usuário não for reconhecido, redireciona para uma página de erro
+                    return "pagina_de_erro";
+            }
         } else {
             // Se a senha for incorreta, exibe uma mensagem de erro na página de login
             model.addAttribute("error", "Senha incorreta");
             model.addAttribute("cpf", cpf); // Adiciona o CPF novamente ao modelo
             return "login";
         }
-    }
+    }    
     
 
 }

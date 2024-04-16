@@ -8,19 +8,19 @@ import org.springframework.stereotype.Repository;
 import com.projeto.repository.PessoaRepository;
 
 @Repository
-public class PessoaRepositoryJDBC implements PessoaRepository{
+public class PessoaRepositoryJDBC implements PessoaRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PessoaRepositoryJDBC(JdbcTemplate jdbcTemplate){
+    public PessoaRepositoryJDBC(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public void save(Pessoa pessoa){
+    public void save(Pessoa pessoa) {
 
     }
-    
+
     @Override
     public List<Pessoa> findAll() {
         return null;
@@ -68,16 +68,21 @@ public class PessoaRepositoryJDBC implements PessoaRepository{
         System.out.println("CPF: " + cpf);
         System.out.println("Senha: " + senha);
         System.out.println("Executando consulta SQL para validar senha...");
-        
-        // Consulta SQL para verificar se há uma correspondência de CPF e senha
+
         String sql = "SELECT COUNT(*) FROM pessoa WHERE cpf = ? AND senha = ?";
         System.out.println("Consulta SQL: " + sql);
-    
-        // Executa a consulta SQL e retorna o resultado como booleano
-        // Retorna verdadeiro se houver pelo menos um resultado (ou seja, a senha é válida)
-        // Retorna falso se nenhum resultado for encontrado (ou seja, a senha é inválida)
+
         return jdbcTemplate.queryForObject(sql, Integer.class, cpf, senha) > 0;
     }
-    
-    
+
+    @Override
+    public String buscarTipoUsuarioPorCpf(String cpf) {
+        String sql = "SELECT TipoUsuario FROM pessoa WHERE cpf = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, String.class, cpf);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
 }

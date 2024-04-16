@@ -12,4 +12,5 @@ public interface PessoaRepository {
     String buscarSenhaPorCpf(String cpf);
     void atualizarSenhaPorCpf(String cpf, String novaSenha);
     boolean validarSenha(String cpf, String senha);
+    String buscarTipoUsuarioPorCpf(String cpf);
 }
