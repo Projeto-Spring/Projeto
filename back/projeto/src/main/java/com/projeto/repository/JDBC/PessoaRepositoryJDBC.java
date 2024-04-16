@@ -1,6 +1,10 @@
 package com.projeto.repository.JDBC;
 
+import com.projeto.model.Admin;
+import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
+import com.projeto.model.Professor;
+
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,6 +26,22 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         jdbcTemplate.update(sql, pessoa.getNome(), pessoa.getDataNascimento(), pessoa.getCpf(),
                 pessoa.getTipoUsuario());
     }
+    @Override
+    public void save(Admin admin) {
+        String sql = "INSERT INTO admin (nome, CPF) VALUES (?, ?)";
+        jdbcTemplate.update(sql, admin.getNome(), admin.getCpf());
+    }
+    @Override
+    public void save(Aluno aluno) {
+        String sql = "INSERT INTO aluno (nome, CPF) VALUES (?, ?)";
+        jdbcTemplate.update(sql, aluno.getNome(), aluno.getCpf());
+    }
+    @Override
+    public void save(Professor professor) {
+        String sql = "INSERT INTO professor (nome, CPF, disciplina) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, professor.getNome(), professor.getCpf(), professor.getDisciplina());
+    }
+
 
     @Override
     public List<Pessoa> findAll() {

@@ -7,8 +7,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Cadastro de Usuários</h1>
-        <form action="/validarCadastro" method="POST">
+        <h1>Cadastro de Aluno</h1>
+        <form id="cadastroForm" action="/validarCadastroProfessor" method="POST">
             <input type="hidden" name="CPF" value="${cpf}">
             
             <div class="form-group">
@@ -20,18 +20,28 @@
                 
                 <label for="cpf">CPF</label>
                 <input type="text" id="cpf" name="cpf" required maxlength="14">
-                
+
+                <label for="dob">Disciplina</label>
+                <input type="text" id="text" name="disciplina" required>
+
                 <label for="tipoUsuario">Tipo de Usuário</label>
                 <select id="tipoUsuario" name="tipoUsuario" required>
-                    <option value="Aluno">Aluno</option>
                     <option value="Professor">Professor</option>
-                    <option value="Admin">Admin</option>
                 </select>
             </div>
             <button type="submit">Cadastrar</button>
         </form>                                 
     </div>
     <script>
+        document.getElementById('cadastroForm').addEventListener('submit', function (event) {
+            const cpfInput = document.getElementById('cpf');
+            const cpf = cpfInput.value.replace(/\D/g, '');
+            if (cpf.length < 11) {
+                event.preventDefault(); // Impede o envio do formulário
+                alert('O CPF não é válido. Por favor, insira um CPF válido com 11 dígitos.');
+            }
+        });
+
         // Função para formatar CPF conforme o usuário digita
         document.getElementById('cpf').addEventListener('input', function (e) {
             let cpf = e.target.value.replace(/\D/g, '');
