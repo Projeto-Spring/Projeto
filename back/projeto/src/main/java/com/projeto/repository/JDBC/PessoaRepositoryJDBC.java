@@ -4,6 +4,7 @@ import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
 import com.projeto.model.Professor;
+import com.projeto.model.Turma;
 
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,6 +41,11 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
     public void save(Professor professor) {
         String sql = "INSERT INTO professor (nome, CPF, disciplina) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, professor.getNome(), professor.getCpf(), professor.getDisciplina());
+    }
+    @Override
+    public void save(Turma turma) {
+        String sql = "INSERT INTO turma (serie) VALUES (?)";
+        jdbcTemplate.update(sql, turma.getSerie());
     }
 
 
@@ -79,20 +85,13 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
 
     @Override
     public void atualizarSenhaPorCpf(String cpf, String novaSenha) {
-        System.out.println("CPF: " + cpf);
-        System.out.println("Senha: " + novaSenha);
         String sql = "UPDATE pessoa SET senha = ? WHERE cpf = ?";
         jdbcTemplate.update(sql, novaSenha, cpf);
     }
 
     @Override
     public boolean validarSenha(String cpf, String senha) {
-        System.out.println("CPF: " + cpf);
-        System.out.println("Senha: " + senha);
-        System.out.println("Executando consulta SQL para validar senha...");
-
         String sql = "SELECT COUNT(*) FROM pessoa WHERE cpf = ? AND senha = ?";
-        System.out.println("Consulta SQL: " + sql);
 
         return jdbcTemplate.queryForObject(sql, Integer.class, cpf, senha) > 0;
     }
@@ -106,5 +105,10 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
             return null;
         }
     }
-
+    @Override
+    public boolean verificarCpfProfessor(String cpf) {
+        String sql = "SELECT COUNT(*) FROM professor WHERE cpf = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, cpf);
+        return count > 0;
+    }
 }

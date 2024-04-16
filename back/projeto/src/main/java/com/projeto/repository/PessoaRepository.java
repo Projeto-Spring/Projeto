@@ -6,6 +6,7 @@ import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
 import com.projeto.model.Professor;
+import com.projeto.model.Turma;
 
 public interface PessoaRepository {
     boolean verificarCpf(String cpf);
@@ -20,4 +21,6 @@ public interface PessoaRepository {
     void atualizarSenhaPorCpf(String cpf, String novaSenha);
     boolean validarSenha(String cpf, String senha);
     String buscarTipoUsuarioPorCpf(String cpf);
+    boolean verificarCpfProfessor(String cpf);
+    void save (Turma turma);
 }

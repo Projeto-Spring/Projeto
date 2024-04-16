@@ -12,6 +12,7 @@ import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
 import com.projeto.model.Professor;
+import com.projeto.model.Turma;
 import com.projeto.repository.JDBC.PessoaRepositoryJDBC;
 
 import jakarta.servlet.http.HttpSession;
@@ -139,11 +140,13 @@ public class PessoaController {
             return "login";
         }
     }
+
     // GETMAPPING DA TELA DE CADASTRAR UM ADMIN
     @GetMapping("/adminCadastrarAdmin")
     public String adminCadastrarAdmin(Model model) {
         return "adminCadastrarAdmin";
     }
+
     // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ADMIN
     @PostMapping("/validarCadastroAdmin")
     public String validarCadastroAdmin(@RequestParam String nome,
@@ -180,88 +183,112 @@ public class PessoaController {
             return "login";
         }
     }
-        // GETMAPPING DA TELA DE CADASTRAR UM ALUNO
-        @GetMapping("/adminCadastrarAluno")
-        public String adminCadastrarAluno(Model model) {
-            return "adminCadastrarAluno";
-        }
-        // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ALUNO
-        @PostMapping("/validarCadastroAluno")
-        public String validarCadastroAluno(@RequestParam String nome,
-                @RequestParam Date data_nascimento,
-                @RequestParam String cpf,
-                @RequestParam String tipoUsuario,
-                HttpSession session, Model model) {
-            // Acessa o CPF do usuário logado na sessão, se necessário
-            @SuppressWarnings("unused")
-            String cpfLogado = (String) session.getAttribute("cpf");
-    
-            // Verifica se todos os parâmetros necessários estão presentes
-            if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
-                // Verifica se o CPF já existe no banco de dados
-                if (!pessoaRepository.verificarCpf(cpf)) {
-                    // O CPF não existe, então podemos inserir o novo usuário na base de dados
-                    // Crie uma instância de Pessoa com os dados do formulário
-                    Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
-                    Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
-                    // Insere a nova pessoa na base de dados
-                    pessoaRepository.save(aluno);
-                    pessoaRepository.save(pessoa);
-    
-                    // Redireciona para a página de sucesso após o cadastro
-                    return "redirect:/homeAdmin";
-                } else {
-                    // Se o CPF já existir, exibe uma mensagem de erro
-                    model.addAttribute("error", "CPF já cadastrado");
-                    return "login";
-                }
+
+    // GETMAPPING DA TELA DE CADASTRAR UM ALUNO
+    @GetMapping("/adminCadastrarAluno")
+    public String adminCadastrarAluno(Model model) {
+        return "adminCadastrarAluno";
+    }
+
+    // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ALUNO
+    @PostMapping("/validarCadastroAluno")
+    public String validarCadastroAluno(@RequestParam String nome,
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            HttpSession session, Model model) {
+        // Acessa o CPF do usuário logado na sessão, se necessário
+        @SuppressWarnings("unused")
+        String cpfLogado = (String) session.getAttribute("cpf");
+
+        // Verifica se todos os parâmetros necessários estão presentes
+        if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
+            // Verifica se o CPF já existe no banco de dados
+            if (!pessoaRepository.verificarCpf(cpf)) {
+                // O CPF não existe, então podemos inserir o novo usuário na base de dados
+                // Crie uma instância de Pessoa com os dados do formulário
+                Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
+                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
+                // Insere a nova pessoa na base de dados
+                pessoaRepository.save(aluno);
+                pessoaRepository.save(pessoa);
+
+                // Redireciona para a página de sucesso após o cadastro
+                return "redirect:/homeAdmin";
             } else {
-                // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
-                model.addAttribute("error", "Todos os campos são obrigatórios");
+                // Se o CPF já existir, exibe uma mensagem de erro
+                model.addAttribute("error", "CPF já cadastrado");
                 return "login";
             }
+        } else {
+            // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
+            model.addAttribute("error", "Todos os campos são obrigatórios");
+            return "login";
         }
-                // GETMAPPING DA TELA DE CADASTRAR UM PROFESSOR
-                @GetMapping("/adminCadastrarProfessor")
-                public String adminCadastrarProfessor(Model model) {
-                    return "adminCadastrarProfessor";
-                }
-                // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ALUNO
-                @PostMapping("/validarCadastroProfessor")
-                public String validarCadastroProfessor(@RequestParam String nome,
-                        @RequestParam Date data_nascimento,
-                        @RequestParam String cpf,
-                        @RequestParam String tipoUsuario,
-                        @RequestParam String disciplina,
-                        HttpSession session, Model model) {
-                    // Acessa o CPF do usuário logado na sessão, se necessário
-                    @SuppressWarnings("unused")
-                    String cpfLogado = (String) session.getAttribute("cpf");
-            
-                    // Verifica se todos os parâmetros necessários estão presentes
-                    if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
-                        // Verifica se o CPF já existe no banco de dados
-                        if (!pessoaRepository.verificarCpf(cpf)) {
-                            // O CPF não existe, então podemos inserir o novo usuário na base de dados
-                            // Crie uma instância de Pessoa com os dados do formulário
-                            Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
-                            Professor professor = new Professor(0, 0, nome, data_nascimento, cpf, tipoUsuario, null, disciplina);
-                            // Insere a nova pessoa na base de dados
-                            pessoaRepository.save(professor);
-                            pessoaRepository.save(pessoa);
-            
-                            // Redireciona para a página de sucesso após o cadastro
-                            return "redirect:/homeAdmin";
-                        } else {
-                            // Se o CPF já existir, exibe uma mensagem de erro
-                            model.addAttribute("error", "CPF já cadastrado");
-                            return "login";
-                        }
-                    } else {
-                        // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
-                        model.addAttribute("error", "Todos os campos são obrigatórios");
-                        return "login";
-                    }
-                }
-    
+    }
+
+    // GETMAPPING DA TELA DE CADASTRAR UM PROFESSOR
+    @GetMapping("/adminCadastrarProfessor")
+    public String adminCadastrarProfessor(Model model) {
+        return "adminCadastrarProfessor";
+    }
+
+    // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ALUNO
+    @PostMapping("/validarCadastroProfessor")
+    public String validarCadastroProfessor(@RequestParam String nome,
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            @RequestParam String disciplina,
+            HttpSession session, Model model) {
+        // Acessa o CPF do usuário logado na sessão, se necessário
+        @SuppressWarnings("unused")
+        String cpfLogado = (String) session.getAttribute("cpf");
+
+        // Verifica se todos os parâmetros necessários estão presentes
+        if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
+            // Verifica se o CPF já existe no banco de dados
+            if (!pessoaRepository.verificarCpf(cpf)) {
+                // O CPF não existe, então podemos inserir o novo usuário na base de dados
+                // Crie uma instância de Pessoa com os dados do formulário
+                Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
+                Professor professor = new Professor(0, 0, nome, data_nascimento, cpf, tipoUsuario, null, disciplina);
+                // Insere a nova pessoa na base de dados
+                pessoaRepository.save(professor);
+                pessoaRepository.save(pessoa);
+
+                // Redireciona para a página de sucesso após o cadastro
+                return "redirect:/homeAdmin";
+            } else {
+                // Se o CPF já existir, exibe uma mensagem de erro
+                model.addAttribute("error", "CPF já cadastrado");
+                return "login";
+            }
+        } else {
+            // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
+            model.addAttribute("error", "Todos os campos são obrigatórios");
+            return "login";
+        }
+    }
+    @GetMapping("/adminCadastrarTurma")
+    public String adminCadastrarTurma(Model model) {
+        return "adminCadastrarTurma";
+    }
+
+    @PostMapping("/validarCadastroTurma")
+    public String validarCadastroTurma(@RequestParam String serie,
+                                       @RequestParam String cpf,
+                                       HttpSession session, Model model) {
+        if (pessoaRepository.verificarCpfProfessor(cpf)){
+            session.setAttribute("cpf", cpf);
+            Turma turma = new Turma(0,serie,0);
+            pessoaRepository.save(turma);
+            return"redirect:/homeAdmin";
+        }
+        else {
+            // SE NAO FOR ENCONTRADO O CPF DO PROFESSOR
+            model.addAttribute("error", "CPF do professor não encontrado");
+            return "login";
+        }
+    }
 }
