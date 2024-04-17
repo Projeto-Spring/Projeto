@@ -366,26 +366,27 @@ public class PessoaController {
     }
 
     @GetMapping("/exibirTurmasAluno")
-public String mostrarTurmasDoAluno(Model model, HttpSession session) {
-    String cpfLogado = (String) session.getAttribute("cpf");
-
-    // Verifica se o CPF recuperado da sessão é nulo
-    if (cpfLogado == null) {
-        // Adiciona uma mensagem de erro ao modelo
-        model.addAttribute("erro", "CPF do aluno não encontrado na sessão.");
-        return "error"; // Por exemplo, redireciona para uma página de erro
+    public String mostrarTurmasDoAluno(Model model, HttpSession session) {
+        String cpfLogado = (String) session.getAttribute("cpf");
+    
+        // Verifica se o CPF recuperado da sessão é nulo
+        if (cpfLogado == null) {
+            // Adiciona uma mensagem de erro ao modelo
+            model.addAttribute("erro", "CPF do aluno não encontrado na sessão.");
+            return "error"; // Por exemplo, redireciona para uma página de erro
+        }
+    
+        // Adiciona o CPF do aluno ao modelo para alerta
+        model.addAttribute("cpfLogado", cpfLogado);
+    
+        // Recupera as turmas do aluno
+        List<Turma> turmas = pessoaRepository.findTurmasByAlunoCpf(cpfLogado);
+    
+        // Adiciona as turmas ao modelo
+        model.addAttribute("turmas", turmas);
+    
+        return "exibirTurmasAluno";
     }
-
-    // Adiciona o CPF do aluno ao modelo para alerta
-    model.addAttribute("cpfLogado", cpfLogado);
-
-    // Recupera as turmas do aluno
-    List<Turma> turmas = pessoaRepository.findTurmasByAlunoCpf(cpfLogado);
-
-    // Adiciona as turmas ao modelo
-    model.addAttribute("turmas", turmas);
-
-    return "exibirTurmasAluno";
-}
+    
 
 }
