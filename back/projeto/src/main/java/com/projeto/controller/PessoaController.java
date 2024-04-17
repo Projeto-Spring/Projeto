@@ -197,6 +197,7 @@ public class PessoaController {
     public String adminCadastrarAluno(Model model) {
         return "adminCadastrarAluno";
     }
+    // post mapping para metodo de inserir aluno na tabela aluno e em turma_alunos
     @PostMapping("/validarCadastroAluno")
     public String validarCadastroAluno(@RequestParam String nome,
                                        @RequestParam Date data_nascimento,
@@ -260,7 +261,7 @@ public class PessoaController {
         return "adminCadastrarProfessor";
     }
 
-    // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ALUNO
+    // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE PROFESSOR
     @PostMapping("/validarCadastroProfessor")
     public String validarCadastroProfessor(@RequestParam String nome,
             @RequestParam Date data_nascimento,
@@ -296,12 +297,13 @@ public class PessoaController {
             return "login";
         }
     }
-
+    // mapping para o html de cadastrar turma 
     @GetMapping("/adminCadastrarTurma")
     public String adminCadastrarTurma(Model model) {
         return "adminCadastrarTurma";
     }
 
+    // metodo de cadastro de turma
     @PostMapping("/validarCadastroTurma")
     public String validarCadastroTurma(@RequestParam String serie,
             @RequestParam String cpf,
@@ -330,7 +332,7 @@ public class PessoaController {
             return "login";
         }
     }
-
+    // mapping e metodo para exibir as turmas do professor
     @GetMapping("/exibirTurmasProfessor")
     public String mostrarTurmasDoProfessor(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
@@ -353,7 +355,7 @@ public class PessoaController {
 
         return "exibirTurmasProfessor";
     }
-
+    // metodo para buscar turma, retorna a entidade "turmas", usado em outros metodos
     @GetMapping("/buscarTurmas")
     public ResponseEntity<List<Turma>> buscarTurmas() {
         try {
@@ -364,20 +366,10 @@ public class PessoaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
+    // mapping e metodo para exibir as turmas do aluno
     @GetMapping("/exibirTurmasAluno")
     public String mostrarTurmasDoAluno(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
-    
-        // Verifica se o CPF recuperado da sessão é nulo
-        if (cpfLogado == null) {
-            // Adiciona uma mensagem de erro ao modelo
-            model.addAttribute("erro", "CPF do aluno não encontrado na sessão.");
-            return "error"; // Por exemplo, redireciona para uma página de erro
-        }
-    
-        // Adiciona o CPF do aluno ao modelo para alerta
-        model.addAttribute("cpfLogado", cpfLogado);
     
         // Recupera as turmas do aluno
         List<Turma> turmas = pessoaRepository.findTurmasByAlunoCpf(cpfLogado);
@@ -387,6 +379,50 @@ public class PessoaController {
     
         return "exibirTurmasAluno";
     }
+        // GETMAPPING DA TELA DE CADASTRAR UM ALUNO
+        @GetMapping("/adminAlterarAluno")
+        public String adminAlterarAluno(Model model) {
+            return "adminAlterarAluno";
+        }
+        @PostMapping("/adminAlterarAluno")
+        public String adminAlterarAluno(@RequestParam String nome,
+                                        @RequestParam Date data_nascimento,
+                                        @RequestParam String cpf,
+                                        @RequestParam String tipoUsuario,
+                                        @RequestParam List<Integer> idTurmas,
+                                        HttpSession session, Model model) {
+            // Acessa o CPF do usuário logado na sessão, se necessário
+            @SuppressWarnings("unused")
+            String cpfLogado = (String) session.getAttribute("cpf");
+        
+            // Verifica se todos os parâmetros necessários estão presentes
+            if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
+                // Verifica se o CPF já existe no banco de dados
+                if (!pessoaRepository.verificarCpf(cpf)) {
     
-
+                    // Consulta o idAluno no banco de dados com base no CPF
+                    Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
+                     
+                    // Inserção na tabela de relacionamento entre turma e aluno
+                    for (Integer idTurma : idTurmas) {
+                    TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
+                    pessoaRepository.save(turmaAlunos);
+                }
+                    // Insere a nova pessoa e aluno na base de dados
+    
+                    
+                    // Redireciona para a página de sucesso após o cadastro
+                    return "redirect:/homeAdmin";
+                } else {
+                    // Se o CPF já existir, exibe uma mensagem de erro
+                    model.addAttribute("error", "CPF já cadastrado");
+                    return "login";
+                }
+            } else {
+                // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
+                model.addAttribute("error", "Todos os campos são obrigatórios");
+                return "login";
+            }
+        }
+        
 }
