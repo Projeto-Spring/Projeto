@@ -30,4 +30,5 @@ public interface PessoaRepository {
     boolean verificarExistenciaTurma(int idTurma);
     boolean verificarExistenciaAluno(int idAluno);
     List<Turma> findAllTurmas();
+    int findIdTurmaBySerie(String serie);
 }

@@ -1,7 +1,9 @@
 package com.projeto.controller;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -195,17 +197,16 @@ public class PessoaController {
         return "adminCadastrarAluno";
     }
 
-    // CODIGO QUE PUXA O METODO DO FORM DE CADASTRO DE ALUNO
     @PostMapping("/validarCadastroAluno")
     public String validarCadastroAluno(@RequestParam String nome,
-            @RequestParam Date data_nascimento,
-            @RequestParam String cpf,
-            @RequestParam String tipoUsuario,
-            HttpSession session, Model model) {
+                                        @RequestParam Date data_nascimento,
+                                        @RequestParam String cpf,
+                                        @RequestParam String tipoUsuario,
+                                        @RequestParam int idTurma,
+                                        HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
-        @SuppressWarnings("unused")
         String cpfLogado = (String) session.getAttribute("cpf");
-
+    
         // Verifica se todos os parâmetros necessários estão presentes
         if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             // Verifica se o CPF já existe no banco de dados
@@ -213,11 +214,11 @@ public class PessoaController {
                 // O CPF não existe, então podemos inserir o novo usuário na base de dados
                 // Crie uma instância de Pessoa com os dados do formulário
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
-                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
+                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null, idTurma); // Atualizado para incluir o idTurma
                 // Insere a nova pessoa na base de dados
                 pessoaRepository.save(aluno);
                 pessoaRepository.save(pessoa);
-
+    
                 // Redireciona para a página de sucesso após o cadastro
                 return "redirect:/homeAdmin";
             } else {
@@ -231,6 +232,16 @@ public class PessoaController {
             return "login";
         }
     }
+    
+    @ResponseBody
+    @GetMapping("/buscarIdTurma")
+    public Map<String, Integer> buscarIdTurma(@RequestParam String serie) {
+        int idTurma = pessoaRepository.findIdTurmaBySerie(serie);
+        Map<String, Integer> response = new HashMap<>();
+        response.put("idTurma", idTurma);
+        return response;
+    }
+    
 
     // GETMAPPING DA TELA DE CADASTRAR UM PROFESSOR
     @GetMapping("/adminCadastrarProfessor")
@@ -365,22 +376,4 @@ public class PessoaController {
         }
     }
 
-    @PostMapping("/cadastrarAluno")
-    public String cadastrarAluno(@ModelAttribute Aluno aluno, HttpSession session) {
-        // Extrai o ID da turma dos dados recebidos do formulário
-        int idTurma = aluno.getIdTurma();
-        
-        // Verifica se o ID da turma é válido
-        if (pessoaRepository.verificarExistenciaTurma(idTurma)) {
-            // Se a turma existe, associa o aluno a essa turma
-            pessoaRepository.associarAlunoTurma(idTurma, aluno.getId());
-            // Restante do código para salvar o aluno no banco de dados...
-            return "redirect:/sucesso"; // Redireciona para a página de sucesso após o cadastro
-        } else {
-            // Caso o ID da turma não seja válido, tratamento de erro...
-            return "redirect:/erro"; // Redireciona para a página de erro
-        }
-    }
-    
-    
 }

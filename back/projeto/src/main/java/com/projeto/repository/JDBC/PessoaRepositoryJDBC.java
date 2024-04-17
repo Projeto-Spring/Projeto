@@ -35,11 +35,24 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         jdbcTemplate.update(sql, admin.getNome(), admin.getCpf());
     }
 
+    // Implemente o método findIdTurmaBySerie na classe PessoaRepositoryJDBC
+    @Override
+    public int findIdTurmaBySerie(String serie) {
+        String sql = "SELECT idTurma FROM Turma WHERE serie = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, serie);
+        } catch (EmptyResultDataAccessException e) {
+            return -1; // Ou lidar com o caso em que nenhuma turma é encontrada para a série fornecida
+        }
+    }
+
+    // Atualize o método save na classe PessoaRepositoryJDBC para atribuir o idTurma
+    // ao aluno
     @Override
     public void save(Aluno aluno) {
-        String sql = "INSERT INTO aluno (nome, CPF) VALUES (?, ?)";
-        jdbcTemplate.update(sql, aluno.getNome(), aluno.getCpf());
-    }
+        String sql = "INSERT INTO Aluno (Nome, CPF, idTurma) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, aluno.getNome(), aluno.getCpf(), aluno.getIdTurma());
+    }    
 
     @Override
     public void save(Professor professor) {
