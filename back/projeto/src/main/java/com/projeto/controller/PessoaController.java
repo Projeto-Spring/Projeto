@@ -266,7 +266,6 @@ public class PessoaController {
             @RequestParam Date data_nascimento,
             @RequestParam String cpf,
             @RequestParam String tipoUsuario,
-            @RequestParam String disciplina,
             HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
         @SuppressWarnings("unused")
@@ -279,7 +278,7 @@ public class PessoaController {
                 // O CPF não existe, então podemos inserir o novo usuário na base de dados
                 // Crie uma instância de Pessoa com os dados do formulário
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
-                Professor professor = new Professor(0, 0, nome, data_nascimento, cpf, tipoUsuario, null, disciplina);
+                Professor professor = new Professor(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
                 // Insere a nova pessoa na base de dados
                 pessoaRepository.save(professor);
                 pessoaRepository.save(pessoa);
@@ -306,6 +305,7 @@ public class PessoaController {
     @PostMapping("/validarCadastroTurma")
     public String validarCadastroTurma(@RequestParam String serie,
             @RequestParam String cpf,
+            @RequestParam String disciplina,
             HttpSession session, Model model) {
         // Verifica se o CPF do professor existe no banco de dados
         if (pessoaRepository.verificarCpfProfessor(cpf)) {
@@ -313,12 +313,10 @@ public class PessoaController {
             int idProfessor = pessoaRepository.obterIdProfessorPorCpf(cpf);
 
             // Obtém a disciplina do professor com base no CPF
-            String disciplina = pessoaRepository.obterDisciplinaPorCpf(cpf);
 
             // Define o CPF, o ID do professor e a disciplina na sessão
             session.setAttribute("cpf", cpf);
             session.setAttribute("idProfessor", idProfessor);
-            session.setAttribute("disciplina", disciplina);
             // Cria uma nova turma associada ao professor
             Turma turma = new Turma(0, serie, idProfessor, disciplina);
             // Salva a turma no banco de dados
