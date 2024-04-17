@@ -51,8 +51,8 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
     // ao aluno
     @Override
     public void save(Aluno aluno) {
-        String sql = "INSERT INTO Aluno (Nome, CPF, idTurma) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, aluno.getNome(), aluno.getCpf(), aluno.getIdTurma());
+        String sql = "INSERT INTO Aluno (Nome, CPF) VALUES (?, ?)";
+        jdbcTemplate.update(sql, aluno.getNome(), aluno.getCpf());
     }    
 
     @Override

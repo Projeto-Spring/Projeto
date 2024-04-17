@@ -202,7 +202,7 @@ public class PessoaController {
                                        @RequestParam Date data_nascimento,
                                        @RequestParam String cpf,
                                        @RequestParam String tipoUsuario,
-                                       @RequestParam int idTurma,
+                                       @RequestParam List<Integer> idTurmas,
                                        HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
         @SuppressWarnings("unused")
@@ -215,15 +215,18 @@ public class PessoaController {
 
 
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
-                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null, idTurma); // Atualizado para incluir o idTurma
+                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null); // Atualizado para incluir o idTurma
                 pessoaRepository.save(aluno);
                 pessoaRepository.save(pessoa);
+
                 // Consulta o idAluno no banco de dados com base no CPF
                 Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
+                 
                 // Inserção na tabela de relacionamento entre turma e aluno
+                for (Integer idTurma : idTurmas) {
                 TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
                 pessoaRepository.save(turmaAlunos);
-                
+            }
                 // Insere a nova pessoa e aluno na base de dados
 
                 

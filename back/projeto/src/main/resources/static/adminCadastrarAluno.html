@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,57 +16,54 @@
             <div class="form-group">
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="nome" required>
-
+            
                 <label for="dob">Data de Nascimento</label>
                 <input type="date" id="dob" name="data_nascimento" required>
-
+            
                 <label for="cpf">CPF</label>
                 <input type="text" id="cpf" name="cpf" required maxlength="14">
-
+            
                 <label for="tipoUsuario">Tipo de Usuário</label>
                 <select id="tipoUsuario" name="tipoUsuario" required>
                     <option value="Aluno">Aluno</option>
                 </select>
-
-                <label for="turma">Turma</label>
-                <select id="turma" name="idTurma" required>
-                    <!-- As opções de turmas serão inseridas dinamicamente aqui -->
-                </select>
+            
+                <label>Turmas</label>
+                <div id="turmasCheckbox">
+                    <!-- As checkboxes de turmas serão inseridas dinamicamente aqui -->
+                </div>
             </div>
             <button type="submit">Cadastrar</button>
         </form>
     </div>
     <script>
-        // Função para buscar e preencher as opções de turmas
+        // Função para buscar e preencher as checkboxes de turmas
         async function carregarTurmas() {
             const response = await fetch('/buscarTurmas');
             const turmas = await response.json();
 
-            const turmaSelect = document.getElementById('turma');
-            turmaSelect.innerHTML = ''; // Limpa as opções existentes
+            const turmasCheckboxDiv = document.getElementById('turmasCheckbox');
+            turmasCheckboxDiv.innerHTML = ''; // Limpa o conteúdo existente
 
-            // Adiciona as opções de turmas ao campo de seleção
+            // Adiciona as checkboxes de turmas
             turmas.forEach(turma => {
-                const option = document.createElement('option');
-                option.value = turma.idTurma;
-                option.textContent = turma.serie; // Mostra apenas a série da turma
-                turmaSelect.appendChild(option);
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'idTurmas'; // Use um array de IDs para permitir vários valores
+                checkbox.value = turma.idTurma;
+
+                const label = document.createElement('label');
+                label.textContent = turma.serie; // Mostra apenas a série da turma
+
+                // Adiciona a checkbox e a label ao div de checkboxes
+                turmasCheckboxDiv.appendChild(checkbox);
+                turmasCheckboxDiv.appendChild(label);
+                turmasCheckboxDiv.appendChild(document.createElement('br')); // Adiciona uma quebra de linha
             });
         }
 
         // Chama a função para carregar as turmas ao carregar a página
         document.addEventListener('DOMContentLoaded', carregarTurmas);
-
-        // Função para capturar o ID da turma selecionada e armazená-lo no campo oculto
-        function capturarIdTurma() {
-            const turmaSelect = document.getElementById('turma');
-            const idTurmaSelecionada = turmaSelect.value;
-            document.getElementById('idTurma').value = idTurmaSelecionada;
-        }
-
-        // Adicione um evento para chamar a função capturarIdTurma ao selecionar uma turma
-        document.getElementById('turma').addEventListener('change', capturarIdTurma);
-
 
         // Função para formatar CPF conforme o usuário digita
         document.getElementById('cpf').addEventListener('input', function (e) {
