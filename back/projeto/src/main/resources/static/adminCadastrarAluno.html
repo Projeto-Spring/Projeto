@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Formulário de Cadastro de Aluno</title>
 </head>
 <body>
     <div class="container">
-        <h1>Cadastro de aluno</h1>
-        <form id="cadastroForm" action="/validarCadastroAluno" method="POST">
+        <h1>Cadastro de Aluno</h1>
+        <form id="cadastroForm" action="/cadastrarAluno" method="POST">
             <input type="hidden" name="CPF" value="${cpf}">
             
             <div class="form-group">
@@ -16,7 +16,7 @@
                 <input type="text" id="name" name="nome" required>
                 
                 <label for="dob">Data de Nascimento</label>
-                <input type="date" id="date" name="data_nascimento" required>
+                <input type="date" id="date" name="dataNascimento" required>
                 
                 <label for="cpf">CPF</label>
                 <input type="text" id="cpf" name="cpf" required maxlength="14">
@@ -24,21 +24,46 @@
                 <label for="tipoUsuario">Tipo de Usuário</label>
                 <select id="tipoUsuario" name="tipoUsuario" required>
                     <option value="Aluno">Aluno</option>
-
+                </select>
+                
+                <label for="turma">Turma</label>
+                <select id="turma" name="idTurma" required>
+                    <!-- As opções de turmas serão inseridas dinamicamente aqui -->
                 </select>
             </div>
             <button type="submit">Cadastrar</button>
         </form>                                 
     </div>
     <script>
-        document.getElementById('cadastroForm').addEventListener('submit', function (event) {
-            const cpfInput = document.getElementById('cpf');
-            const cpf = cpfInput.value.replace(/\D/g, '');
-            if (cpf.length < 11) {
-                event.preventDefault(); // Impede o envio do formulário
-                alert('O CPF não é válido. Por favor, insira um CPF válido com 11 dígitos.');
-            }
-        });
+        // Função para buscar e preencher as opções de turmas
+        async function carregarTurmas() {
+            const response = await fetch('/buscarTurmas');
+            const turmas = await response.json();
+            
+            const turmaSelect = document.getElementById('turma');
+            turmaSelect.innerHTML = ''; // Limpa as opções existentes
+            
+            // Adiciona as opções de turmas ao campo de seleção
+            turmas.forEach(turma => {
+                const option = document.createElement('option');
+                option.value = turma.idTurma;
+                option.textContent = turma.serie; // Mostra apenas a série da turma
+                turmaSelect.appendChild(option);
+            });
+        }
+        
+        // Chama a função para carregar as turmas ao carregar a página
+        document.addEventListener('DOMContentLoaded', carregarTurmas);
+        
+        // Função para capturar o ID da turma selecionada e armazená-lo no campo oculto
+        function capturarIdTurma() {
+            const turmaSelect = document.getElementById('turma');
+            const idTurmaSelecionada = turmaSelect.value;
+            document.getElementById('idTurma').value = idTurmaSelecionada;
+        }
+
+        // Adicione um evento para chamar a função capturarIdTurma ao selecionar uma turma
+        document.getElementById('turma').addEventListener('change', capturarIdTurma);
 
         // Função para formatar CPF conforme o usuário digita
         document.getElementById('cpf').addEventListener('input', function (e) {

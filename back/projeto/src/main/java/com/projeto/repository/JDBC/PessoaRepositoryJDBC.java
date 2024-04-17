@@ -140,16 +140,42 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
 
     @Override
     public List<Turma> findTurmasByProfessorCpf(String cpf) {
-        int idProfessor = obterIdProfessorPorCpf(cpf);
-        String disciplina = obterDisciplinaPorCpf(cpf);
-        String sql = "SELECT idTurma, Serie, Disciplina FROM Turma WHERE idProfessor = ?";
-        List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class), idProfessor);
-        
-        // Define a disciplina para cada turma
-        turmas.forEach(turma -> turma.setDisciplina(disciplina));
-        
+        String sql = "SELECT t.idTurma, t.Serie, t.idProfessor, t.Disciplina, p.disciplina AS professorDisciplina FROM Turma t "
+                +
+                "INNER JOIN Professor p ON t.idProfessor = p.idProfessor " +
+                "WHERE p.CPF = ?";
+        List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class), cpf);
         return turmas;
     }
-    
-    
+
+    @Override
+    public void associarAlunoTurma(int idTurma, int idAluno) {
+        String sql = "INSERT INTO Turma_Alunos (idTurma, idAluno) " +
+                "SELECT ?, ? " +
+                "FROM Turma " +
+                "INNER JOIN Aluno ON Turma.idTurma = ? AND Aluno.idAluno = ?";
+        jdbcTemplate.update(sql, idTurma, idAluno, idTurma, idAluno);
+    }
+
+    @Override
+    public boolean verificarExistenciaAluno(int idAluno) {
+        String sql = "SELECT COUNT(*) FROM Aluno WHERE idAluno = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, idAluno);
+        return count > 0;
+    }
+
+    @Override
+    public boolean verificarExistenciaTurma(int idTurma) {
+        String sql = "SELECT COUNT(*) FROM Turma WHERE idTurma = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma);
+        return count > 0;
+    }
+
+    @Override
+    public List<Turma> findAllTurmas() {
+        String sql = "SELECT * FROM Turma";
+        List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class));
+        return turmas;
+    }
+
 }

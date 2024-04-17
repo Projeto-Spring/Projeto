@@ -26,4 +26,8 @@ public interface PessoaRepository {
     int obterIdProfessorPorCpf(String cpf);
     String obterDisciplinaPorCpf(String cpf);
     List<Turma> findTurmasByProfessorCpf(String cpf);
+    void associarAlunoTurma(int idTurma, int idAluno);
+    boolean verificarExistenciaTurma(int idTurma);
+    boolean verificarExistenciaAluno(int idAluno);
+    List<Turma> findAllTurmas();
 }

@@ -3,11 +3,15 @@ package com.projeto.controller;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
@@ -312,29 +316,71 @@ public class PessoaController {
     @GetMapping("/exibirTurmasProfessor")
     public String mostrarTurmasDoProfessor(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
-        
+
         // Verifica se o CPF recuperado da sessão é nulo
         if (cpfLogado == null) {
             // Adiciona uma mensagem de erro ao modelo
             model.addAttribute("erro", "CPF do professor não encontrado na sessão.");
             return "error"; // Por exemplo, redireciona para uma página de erro
         }
-        
+
         // Adiciona o CPF do professor ao modelo para alerta
         model.addAttribute("cpfLogado", cpfLogado);
-        
+
         // Imprime o CPF para verificar se está sendo recuperado corretamente
         System.out.println("CPF do professor logado: " + cpfLogado);
-        
+
         // Recupera as turmas do professor
         List<Turma> turmas = pessoaRepository.findTurmasByProfessorCpf(cpfLogado);
-        
+
         // Adiciona as turmas ao modelo
         model.addAttribute("turmas", turmas);
-        
+
         return "exibirTurmasProfessor";
+    }
+
+    @GetMapping("/associarAlunoTurma")
+    public String associarAlunoTurma(@RequestParam int idTurma, @RequestParam int idAluno, Model model) {
+        // Verifica se a turma e o aluno existem no banco de dados
+        if (pessoaRepository.verificarExistenciaTurma(idTurma) && pessoaRepository.verificarExistenciaAluno(idAluno)) {
+            // Associar o aluno à turma
+            pessoaRepository.associarAlunoTurma(idTurma, idAluno);
+            // Redirecionar para alguma página de sucesso
+            return "redirect:/exibirAlunoTurma";
+        } else {
+            // Caso a turma ou o aluno não existam, exibir uma mensagem de erro
+            model.addAttribute("error", "Turma ou aluno não encontrados");
+            return "home";
+        }
+    }
+
+    @GetMapping("/buscarTurmas")
+    public ResponseEntity<List<Turma>> buscarTurmas() {
+        try {
+            List<Turma> turmas = pessoaRepository.findAllTurmas(); // Supondo que você tenha um método no seu repositório para buscar todas as turmas
+            return ResponseEntity.ok().body(turmas);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar turmas: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/cadastrarAluno")
+    public String cadastrarAluno(@ModelAttribute Aluno aluno, HttpSession session) {
+        // Extrai o ID da turma dos dados recebidos do formulário
+        int idTurma = aluno.getIdTurma();
+        
+        // Verifica se o ID da turma é válido
+        if (pessoaRepository.verificarExistenciaTurma(idTurma)) {
+            // Se a turma existe, associa o aluno a essa turma
+            pessoaRepository.associarAlunoTurma(idTurma, aluno.getId());
+            // Restante do código para salvar o aluno no banco de dados...
+            return "redirect:/sucesso"; // Redireciona para a página de sucesso após o cadastro
+        } else {
+            // Caso o ID da turma não seja válido, tratamento de erro...
+            return "redirect:/erro"; // Redireciona para a página de erro
+        }
     }
     
     
-
 }

@@ -2,7 +2,6 @@ package com.projeto.model;
 
 import java.sql.Date;
 
-
 public class Aluno extends Pessoa {
     private int idAluno;
 
