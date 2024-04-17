@@ -34,4 +34,5 @@ public interface PessoaRepository {
     List<Turma> findAllTurmas();
     int findIdTurmaBySerie(String serie);
     int obterIdAlunoPorCpf(String cpf);
+    List<Turma> findTurmasByAlunoCpf(String cpf);
 }

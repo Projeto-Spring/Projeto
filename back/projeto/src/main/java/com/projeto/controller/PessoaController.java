@@ -345,9 +345,6 @@ public class PessoaController {
         // Adiciona o CPF do professor ao modelo para alerta
         model.addAttribute("cpfLogado", cpfLogado);
 
-        // Imprime o CPF para verificar se está sendo recuperado corretamente
-        System.out.println("CPF do professor logado: " + cpfLogado);
-
         // Recupera as turmas do professor
         List<Turma> turmas = pessoaRepository.findTurmasByProfessorCpf(cpfLogado);
 
@@ -355,21 +352,6 @@ public class PessoaController {
         model.addAttribute("turmas", turmas);
 
         return "exibirTurmasProfessor";
-    }
-
-    @GetMapping("/associarAlunoTurma")
-    public String associarAlunoTurma(@RequestParam int idTurma, @RequestParam int idAluno, Model model) {
-        // Verifica se a turma e o aluno existem no banco de dados
-        if (pessoaRepository.verificarExistenciaTurma(idTurma) && pessoaRepository.verificarExistenciaAluno(idAluno)) {
-            // Associar o aluno à turma
-            pessoaRepository.associarAlunoTurma(idTurma, idAluno);
-            // Redirecionar para alguma página de sucesso
-            return "redirect:/exibirAlunoTurma";
-        } else {
-            // Caso a turma ou o aluno não existam, exibir uma mensagem de erro
-            model.addAttribute("error", "Turma ou aluno não encontrados");
-            return "home";
-        }
     }
 
     @GetMapping("/buscarTurmas")
@@ -382,5 +364,28 @@ public class PessoaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/exibirTurmasAluno")
+public String mostrarTurmasDoAluno(Model model, HttpSession session) {
+    String cpfLogado = (String) session.getAttribute("cpf");
+
+    // Verifica se o CPF recuperado da sessão é nulo
+    if (cpfLogado == null) {
+        // Adiciona uma mensagem de erro ao modelo
+        model.addAttribute("erro", "CPF do aluno não encontrado na sessão.");
+        return "error"; // Por exemplo, redireciona para uma página de erro
+    }
+
+    // Adiciona o CPF do aluno ao modelo para alerta
+    model.addAttribute("cpfLogado", cpfLogado);
+
+    // Recupera as turmas do aluno
+    List<Turma> turmas = pessoaRepository.findTurmasByAlunoCpf(cpfLogado);
+
+    // Adiciona as turmas ao modelo
+    model.addAttribute("turmas", turmas);
+
+    return "exibirTurmasAluno";
+}
 
 }

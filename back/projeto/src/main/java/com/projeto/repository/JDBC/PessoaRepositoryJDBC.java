@@ -53,7 +53,7 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
     public void save(Aluno aluno) {
         String sql = "INSERT INTO Aluno (Nome, CPF) VALUES (?, ?)";
         jdbcTemplate.update(sql, aluno.getNome(), aluno.getCpf());
-    }    
+    }
 
     @Override
     public void save(Professor professor) {
@@ -66,12 +66,12 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         String sql = "INSERT INTO turma (serie, idProfessor, disciplina) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, turma.getSerie(), turma.getIdProfessor(), turma.getDisciplina());
     }
+
     @Override
     public void save(TurmaAlunos turmaAlunos) {
         String sql = "INSERT INTO turma_alunos (idTurma, idAluno) VALUES (?, ?)";
         jdbcTemplate.update(sql, turmaAlunos.getIdTurma(), turmaAlunos.getIdAluno());
     }
-
 
     @Override
     public List<Pessoa> findAll() {
@@ -159,16 +159,6 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
     }
 
     @Override
-    public List<Turma> findTurmasByProfessorCpf(String cpf) {
-        String sql = "SELECT t.idTurma, t.Serie, t.idProfessor, t.Disciplina, p.disciplina AS professorDisciplina FROM Turma t "
-                +
-                "INNER JOIN Professor p ON t.idProfessor = p.idProfessor " +
-                "WHERE p.CPF = ?";
-        List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class), cpf);
-        return turmas;
-    }
-
-    @Override
     public void associarAlunoTurma(int idTurma, int idAluno) {
         String sql = "INSERT INTO Turma_Alunos (idTurma, idAluno) " +
                 "SELECT ?, ? " +
@@ -197,6 +187,7 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class));
         return turmas;
     }
+
     @Override
     public int obterIdAlunoPorCpf(String cpf) {
         String sql = "SELECT idAluno FROM Aluno WHERE CPF = ?";
@@ -207,4 +198,26 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
             return 0;
         }
     }
+
+    @Override
+    public List<Turma> findTurmasByProfessorCpf(String cpf) {
+        String sql = "SELECT t.idTurma, t.Serie, t.idProfessor, t.Disciplina, t.disciplina AS professorDisciplina FROM Turma t "
+                +
+                "INNER JOIN Professor p ON t.idProfessor = p.idProfessor " +
+                "WHERE p.CPF = ?";
+        List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class), cpf);
+        return turmas;
+    }
+
+    @Override
+    public List<Turma> findTurmasByAlunoCpf(String cpf) {
+        String sql = "SELECT t.idTurma, t.Serie, t.Disciplina " +
+                "FROM Turma t " +
+                "INNER JOIN Turma_Alunos ta ON t.idTurma = ta.idTurma " +
+                "INNER JOIN Aluno a ON ta.idAluno = a.idAluno " +
+                "INNER JOIN Pessoa p ON a.CPF = p.CPF " +
+                "WHERE p.CPF = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class), cpf);
+    }
+
 }
