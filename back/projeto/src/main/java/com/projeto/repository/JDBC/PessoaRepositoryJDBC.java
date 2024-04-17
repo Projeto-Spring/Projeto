@@ -5,6 +5,7 @@ import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
+import com.projeto.model.TurmaAlunos;
 
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -65,6 +66,12 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         String sql = "INSERT INTO turma (serie, idProfessor, disciplina) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, turma.getSerie(), turma.getIdProfessor(), turma.getDisciplina());
     }
+    @Override
+    public void save(TurmaAlunos turmaAlunos) {
+        String sql = "INSERT INTO turma_alunos (idTurma, idAluno) VALUES (?, ?)";
+        jdbcTemplate.update(sql, turmaAlunos.getIdTurma(), turmaAlunos.getIdAluno());
+    }
+
 
     @Override
     public List<Pessoa> findAll() {
@@ -190,5 +197,14 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         List<Turma> turmas = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class));
         return turmas;
     }
-
+    @Override
+    public int obterIdAlunoPorCpf(String cpf) {
+        String sql = "SELECT idAluno FROM Aluno WHERE CPF = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, cpf);
+        } catch (EmptyResultDataAccessException e) {
+            // Retorna 0 se o CPF não for encontrado
+            return 0;
+        }
+    }
 }

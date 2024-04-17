@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +20,7 @@ import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
+import com.projeto.model.TurmaAlunos;
 import com.projeto.repository.JDBC.PessoaRepositoryJDBC;
 
 import jakarta.servlet.http.HttpSession;
@@ -196,29 +197,36 @@ public class PessoaController {
     public String adminCadastrarAluno(Model model) {
         return "adminCadastrarAluno";
     }
-
     @PostMapping("/validarCadastroAluno")
     public String validarCadastroAluno(@RequestParam String nome,
-                                        @RequestParam Date data_nascimento,
-                                        @RequestParam String cpf,
-                                        @RequestParam String tipoUsuario,
-                                        @RequestParam int idTurma,
-                                        HttpSession session, Model model) {
+                                       @RequestParam Date data_nascimento,
+                                       @RequestParam String cpf,
+                                       @RequestParam String tipoUsuario,
+                                       @RequestParam int idTurma,
+                                       HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
+        @SuppressWarnings("unused")
         String cpfLogado = (String) session.getAttribute("cpf");
     
         // Verifica se todos os parâmetros necessários estão presentes
         if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             // Verifica se o CPF já existe no banco de dados
             if (!pessoaRepository.verificarCpf(cpf)) {
-                // O CPF não existe, então podemos inserir o novo usuário na base de dados
-                // Crie uma instância de Pessoa com os dados do formulário
+
+
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
                 Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null, idTurma); // Atualizado para incluir o idTurma
-                // Insere a nova pessoa na base de dados
                 pessoaRepository.save(aluno);
                 pessoaRepository.save(pessoa);
-    
+                // Consulta o idAluno no banco de dados com base no CPF
+                Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
+                // Inserção na tabela de relacionamento entre turma e aluno
+                TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
+                pessoaRepository.save(turmaAlunos);
+                
+                // Insere a nova pessoa e aluno na base de dados
+
+                
                 // Redireciona para a página de sucesso após o cadastro
                 return "redirect:/homeAdmin";
             } else {
@@ -308,10 +316,8 @@ public class PessoaController {
             session.setAttribute("cpf", cpf);
             session.setAttribute("idProfessor", idProfessor);
             session.setAttribute("disciplina", disciplina);
-
             // Cria uma nova turma associada ao professor
             Turma turma = new Turma(0, serie, idProfessor, disciplina);
-
             // Salva a turma no banco de dados
             pessoaRepository.save(turma);
 

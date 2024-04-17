@@ -7,6 +7,7 @@ import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
+import com.projeto.model.TurmaAlunos;
 
 public interface PessoaRepository {
     boolean verificarCpf(String cpf);
@@ -23,6 +24,7 @@ public interface PessoaRepository {
     String buscarTipoUsuarioPorCpf(String cpf);
     boolean verificarCpfProfessor(String cpf);
     void save (Turma turma);
+    void save (TurmaAlunos turmaAlunos);
     int obterIdProfessorPorCpf(String cpf);
     String obterDisciplinaPorCpf(String cpf);
     List<Turma> findTurmasByProfessorCpf(String cpf);
@@ -31,4 +33,5 @@ public interface PessoaRepository {
     boolean verificarExistenciaAluno(int idAluno);
     List<Turma> findAllTurmas();
     int findIdTurmaBySerie(String serie);
+    int obterIdAlunoPorCpf(String cpf);
 }
