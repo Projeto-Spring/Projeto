@@ -16,6 +16,15 @@
             height: 100vh; /* Centralização vertical */
         }
 
+        .container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        background-color: white; /* Fundo branco para contraste */
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
         /* Cabeçalho */
         h1 {
             color: #4A90E2; /* Azul-claro */
@@ -57,24 +66,26 @@
     </style>
 </head>
 <body>
-    <h1>Login</h1>
-    <form action="/login" method="post">
-        <input type="text" name="cpf" id="cpf" placeholder="CPF" required><br>
-        <button type="submit">Entrar</button>
-    </form>
-    <!-- Esta parte precisa de uma configuração de Thymeleaf para funcionar -->
-    <p th:text="${error}"></p>
+    <div class="container">
+        <h1>Login</h1>
+        <form action="/login" method="post">
+            <input type="text" name="cpf" id="cpf" placeholder="CPF" required><br>
+            <button type="submit">Entrar</button>
+        </form>
+        <!-- Esta parte precisa de uma configuração de Thymeleaf para funcionar -->
+        <p th:text="${error}"></p>
 
-    <script>
-        // Função para formatar CPF conforme o usuário digita
-        document.getElementById('cpf').addEventListener('input', function (e) {
-            let cpf = e.target.value.replace(/\D/g, '');
-            cpf = cpf.substring(0, 11); // Limita o CPF a 11 dígitos
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = cpf;
-        });
-    </script>
+        <script>
+            // Função para formatar CPF conforme o usuário digita
+            document.getElementById('cpf').addEventListener('input', function (e) {
+                let cpf = e.target.value.replace(/\D/g, '');
+                cpf = cpf.substring(0, 11); // Limita o CPF a 11 dígitos
+                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+                cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = cpf;
+            });
+        </script>
+    </div>
 </body>
 </html>
