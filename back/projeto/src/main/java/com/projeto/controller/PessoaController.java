@@ -399,6 +399,7 @@ public class PessoaController {
             if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
                 // Verifica se o CPF já existe no banco de dados
                 if (!pessoaRepository.verificarCpf(cpf)) {
+
     
                     // Consulta o idAluno no banco de dados com base no CPF
                     Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
