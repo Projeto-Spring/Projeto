@@ -395,35 +395,6 @@ public class PessoaController {
             @SuppressWarnings("unused")
             String cpfLogado = (String) session.getAttribute("cpf");
         
-            // Verifica se todos os parâmetros necessários estão presentes
-            if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
-                // Verifica se o CPF já existe no banco de dados
-                if (!pessoaRepository.verificarCpf(cpf)) {
-
-    
-                    // Consulta o idAluno no banco de dados com base no CPF
-                    Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
-                     
-                    // Inserção na tabela de relacionamento entre turma e aluno
-                    for (Integer idTurma : idTurmas) {
-                    TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
-                    pessoaRepository.save(turmaAlunos);
-                }
-                    // Insere a nova pessoa e aluno na base de dados
-    
-                    
-                    // Redireciona para a página de sucesso após o cadastro
-                    return "redirect:/homeAdmin";
-                } else {
-                    // Se o CPF já existir, exibe uma mensagem de erro
-                    model.addAttribute("error", "CPF já cadastrado");
-                    return "login";
-                }
-            } else {
-                // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
-                model.addAttribute("error", "Todos os campos são obrigatórios");
-                return "login";
-            }
-        }
+           
         
 }
