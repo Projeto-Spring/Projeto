@@ -3,6 +3,7 @@ package com.projeto.repository.JDBC;
 import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
+import com.projeto.model.Presenca;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
 import com.projeto.model.TurmaAlunos;
@@ -220,4 +221,30 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Turma.class), cpf);
     }
 
+    @Override
+    public List<Aluno> buscarAlunosPorTurma(int idTurma) {
+        String sql = "SELECT a.idAluno, a.nome, a.CPF FROM Aluno a " +
+                "INNER JOIN Turma_Alunos ta ON a.idAluno = ta.idAluno " +
+                "WHERE ta.idTurma = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Aluno.class), idTurma);
+    }
+
+    @Override
+    public void save(Presenca presenca) {
+        String sql = "INSERT INTO presenca (idAluno, idTurma, dataPresenca, situacao) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, presenca.getIdAluno(), presenca.getIdTurma(), presenca.getDataPresenca(), presenca.getSituacao());
+    }
+
+    @Override
+    public List<Aluno> procurarAlunosPorIdTurma(int idTurma) {
+        String sql = "SELECT a.idAluno, a.nome FROM aluno a " +
+                "INNER JOIN Turma_Alunos ta ON a.idAluno = ta.idAluno " +
+                "WHERE ta.idTurma = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Aluno.class), idTurma);
+    }
+    public boolean existeTurma(int idTurma) {
+        String sql = "SELECT COUNT(*) FROM Turma WHERE idTurma = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma);
+        return count > 0;
+    }
 }

@@ -5,16 +5,15 @@
     <title>Turmas do Aluno</title>
     <style>
         body {
-
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #F2F2F2;
-            display: fixed;
+            display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin-left: 7%;
+            align-items: flex-start; /* Ajustado para flex-start */
+            min-height: 100vh; /* Alterado para min-height */
+            padding-top: 20px; /* Adicionado para espaço superior */
         }
 
         h1 {
@@ -38,6 +37,7 @@
         table {
             border-collapse: collapse;
             width: 100%;
+            justify-content: center;
         }
 
         th,
@@ -54,23 +54,23 @@
 </head>
 <body>
     <div class="container">
-    <h1>Turmas do Aluno</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID da Turma</th>
-                <th>Série</th>
-                <th>Disciplina</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="turma : ${turmas}">
-                <td th:text="${turma.idTurma}">ID da Turma</td>
-                <td th:text="${turma.serie}">Série</td>
-                <td th:text="${turma.disciplina}">Disciplina</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <h1>Turmas do Aluno</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID da Turma</th>
+                    <th>Série</th>
+                    <th>Disciplina</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="turma : ${turmas}">
+                    <td th:text="${turma.idTurma}">ID da Turma</td>
+                    <td th:text="${turma.serie}">Série</td>
+                    <td th:text="${turma.disciplina}">Disciplina</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

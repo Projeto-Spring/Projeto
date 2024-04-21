@@ -6,16 +6,15 @@
     <title>Turmas do Professor</title>
     <style>
         body {
-
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #F2F2F2;
-            display: fixed;
+            display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin-left: 7%;
+            align-items: flex-start; /* Ajustado para flex-start */
+            min-height: 100vh; /* Alterado para min-height */
+            padding-top: 20px; /* Adicionado para espaço superior */
         }
 
         h1 {
@@ -31,7 +30,7 @@
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            display: fixed;
+            display: flex;
             flex-direction: column;
             align-items: center;
         }

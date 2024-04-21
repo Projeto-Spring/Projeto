@@ -5,6 +5,7 @@ import java.util.List;
 import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
+import com.projeto.model.Presenca;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
 import com.projeto.model.TurmaAlunos;
@@ -35,4 +36,8 @@ public interface PessoaRepository {
     int findIdTurmaBySerie(String serie);
     int obterIdAlunoPorCpf(String cpf);
     List<Turma> findTurmasByAlunoCpf(String cpf);
+    List<Aluno> buscarAlunosPorTurma(int idTurma);
+    void save(Presenca presenca);
+    List<Aluno> procurarAlunosPorIdTurma(int idTurma);
+    boolean existeTurma(int idTurma);
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.projeto.model.Admin;
 import com.projeto.model.Aluno;
 import com.projeto.model.Pessoa;
+import com.projeto.model.Presenca;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
 import com.projeto.model.TurmaAlunos;
@@ -197,40 +198,40 @@ public class PessoaController {
     public String adminCadastrarAluno(Model model) {
         return "adminCadastrarAluno";
     }
+
     // post mapping para metodo de inserir aluno na tabela aluno e em turma_alunos
     @PostMapping("/validarCadastroAluno")
     public String validarCadastroAluno(@RequestParam String nome,
-                                       @RequestParam Date data_nascimento,
-                                       @RequestParam String cpf,
-                                       @RequestParam String tipoUsuario,
-                                       @RequestParam List<Integer> idTurmas,
-                                       HttpSession session, Model model) {
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            @RequestParam List<Integer> idTurmas,
+            HttpSession session, Model model) {
         // Acessa o CPF do usuário logado na sessão, se necessário
         @SuppressWarnings("unused")
         String cpfLogado = (String) session.getAttribute("cpf");
-    
+
         // Verifica se todos os parâmetros necessários estão presentes
         if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             // Verifica se o CPF já existe no banco de dados
             if (!pessoaRepository.verificarCpf(cpf)) {
 
-
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
-                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null); // Atualizado para incluir o idTurma
+                Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null); // Atualizado para incluir
+                                                                                              // o idTurma
                 pessoaRepository.save(aluno);
                 pessoaRepository.save(pessoa);
 
                 // Consulta o idAluno no banco de dados com base no CPF
                 Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
-                 
+
                 // Inserção na tabela de relacionamento entre turma e aluno
                 for (Integer idTurma : idTurmas) {
-                TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
-                pessoaRepository.save(turmaAlunos);
-            }
+                    TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
+                    pessoaRepository.save(turmaAlunos);
+                }
                 // Insere a nova pessoa e aluno na base de dados
 
-                
                 // Redireciona para a página de sucesso após o cadastro
                 return "redirect:/homeAdmin";
             } else {
@@ -244,7 +245,7 @@ public class PessoaController {
             return "login";
         }
     }
-    
+
     @ResponseBody
     @GetMapping("/buscarIdTurma")
     public Map<String, Integer> buscarIdTurma(@RequestParam String serie) {
@@ -253,7 +254,6 @@ public class PessoaController {
         response.put("idTurma", idTurma);
         return response;
     }
-    
 
     // GETMAPPING DA TELA DE CADASTRAR UM PROFESSOR
     @GetMapping("/adminCadastrarProfessor")
@@ -297,7 +297,8 @@ public class PessoaController {
             return "login";
         }
     }
-    // mapping para o html de cadastrar turma 
+
+    // mapping para o html de cadastrar turma
     @GetMapping("/adminCadastrarTurma")
     public String adminCadastrarTurma(Model model) {
         return "adminCadastrarTurma";
@@ -332,6 +333,7 @@ public class PessoaController {
             return "login";
         }
     }
+
     // mapping e metodo para exibir as turmas do professor
     @GetMapping("/exibirTurmasProfessor")
     public String mostrarTurmasDoProfessor(Model model, HttpSession session) {
@@ -355,75 +357,76 @@ public class PessoaController {
 
         return "exibirTurmasProfessor";
     }
-    // metodo para buscar turma, retorna a entidade "turmas", usado em outros metodos
+
+    // metodo para buscar turma, retorna a entidade "turmas", usado em outros
+    // metodos
     @GetMapping("/buscarTurmas")
     public ResponseEntity<List<Turma>> buscarTurmas() {
         try {
-            List<Turma> turmas = pessoaRepository.findAllTurmas(); // Supondo que você tenha um método no seu repositório para buscar todas as turmas
+            List<Turma> turmas = pessoaRepository.findAllTurmas(); // Supondo que você tenha um método no seu
+                                                                   // repositório para buscar todas as turmas
             return ResponseEntity.ok().body(turmas);
         } catch (Exception e) {
             System.err.println("Erro ao buscar turmas: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
     // mapping e metodo para exibir as turmas do aluno
     @GetMapping("/exibirTurmasAluno")
     public String mostrarTurmasDoAluno(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
-    
+
         // Recupera as turmas do aluno
         List<Turma> turmas = pessoaRepository.findTurmasByAlunoCpf(cpfLogado);
-    
+
         // Adiciona as turmas ao modelo
         model.addAttribute("turmas", turmas);
-    
+
         return "exibirTurmasAluno";
     }
-        // GETMAPPING DA TELA DE CADASTRAR UM ALUNO
-        @GetMapping("/adminAlterarAluno")
-        public String adminAlterarAluno(Model model) {
-            return "adminAlterarAluno";
-        }
-        @PostMapping("/adminAlterarAluno")
-        public String adminAlterarAluno(@RequestParam String nome,
-                                        @RequestParam Date data_nascimento,
-                                        @RequestParam String cpf,
-                                        @RequestParam String tipoUsuario,
-                                        @RequestParam List<Integer> idTurmas,
-                                        HttpSession session, Model model) {
-            // Acessa o CPF do usuário logado na sessão, se necessário
-            @SuppressWarnings("unused")
-            String cpfLogado = (String) session.getAttribute("cpf");
-        
-            // Verifica se todos os parâmetros necessários estão presentes
-            if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
-                // Verifica se o CPF já existe no banco de dados
-                if (!pessoaRepository.verificarCpf(cpf)) {
 
-    
-                    // Consulta o idAluno no banco de dados com base no CPF
-                    Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
-                     
-                    // Inserção na tabela de relacionamento entre turma e aluno
-                    for (Integer idTurma : idTurmas) {
-                    TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
-                    pessoaRepository.save(turmaAlunos);
-                }
-                    // Insere a nova pessoa e aluno na base de dados
-    
-                    
-                    // Redireciona para a página de sucesso após o cadastro
-                    return "redirect:/homeAdmin";
-                } else {
-                    // Se o CPF já existir, exibe uma mensagem de erro
-                    model.addAttribute("error", "CPF já cadastrado");
-                    return "login";
-                }
-            } else {
-                // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
-                model.addAttribute("error", "Todos os campos são obrigatórios");
-                return "login";
-            }
+    // GETMAPPING DA TELA DE CADASTRAR UM ALUNO
+
+    @GetMapping("/inserirIdTurma")
+    public String inserirIdTurma(Model model) {
+        return "inserirIdTurma";
+    }
+
+    @PostMapping("/inserirIdTurma")
+    public String inserirIdTurma(@RequestParam int idTurma, Model model) {
+        // Verifica se o idTurma existe no banco de dados
+        if (pessoaRepository.existeTurma(idTurma)) {
+            List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
+            model.addAttribute("alunos", alunos);
+            return "confirmarPresenca";
+        } else {
+            // Se o idTurma não existe, exibe uma mensagem de erro
+            model.addAttribute("erro", "A turma com o ID especificado não foi encontrada.");
+            return "paginaDeErro"; // Substitua "paginaDeErro" pelo nome da página de erro que você deseja exibir
         }
-        
+    }
+
+    @PostMapping("/confirmarPresenca")
+    public String confirmarPresenca(@RequestParam int idTurma,
+                                    @RequestParam Date dataPresenca,
+                                    @RequestParam List<String> situacao,
+                                    Model model) {
+        // Verifica se os parâmetros são válidos
+        List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
+        if (idAlunos != null && !idAlunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null
+                && !situacao.isEmpty()) {
+            // Itera sobre a lista de alunos e situações
+            for (int i = 0; i < idAlunos.size(); i++) {
+                Presenca presenca = new Presenca(0, idAlunos.get(i), dataPresenca, situacao.get(i), idTurma);                                                                                          
+                pessoaRepository.save(presenca);
+            }
+            // Redireciona para a página do professor após o cadastro de presenças
+            return "redirect:/homeProfessor";
+        } else {
+            // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
+            model.addAttribute("error", "Todos os campos são obrigatórios");
+            return "paginaDeErro"; // Substitua "paginaDeErro" pelo nome da página de erro que você deseja exibir
+        }
+    }
 }

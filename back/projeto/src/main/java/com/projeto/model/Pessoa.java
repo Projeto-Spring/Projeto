@@ -21,6 +21,9 @@ public class Pessoa {
         this.senha = senha;
     }
 
+    public Pessoa() {
+    }
+
     // Métodos getters e setters
     public int getIdPessoa() {
         return idPessoa;

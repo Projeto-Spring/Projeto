@@ -5,6 +5,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário de Cadastro de Aluno</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F2F2F2;
+            height: 100%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin: auto;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        h1 {
+            color: #4A90E2;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #000;
+        }
+
+        input[type="checkbox"] {
+            display: inline-block;
+            margin-top: 15px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        input[type="checkbox"] + label {
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: 15px;
+        }
+
+        input[type="checkbox"],
+        input[type="checkbox"] + label {
+            display: inline-block;
+        }
+
+        input,
+        select {
+            width: calc(100% - 20px); /* Ajustado para considerar a margem direita da checkbox */
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            display: inline-block; /* Adicionado para manter os elementos em linha */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,9 +110,7 @@
                 </select>
 
                 <label>Turmas</label>
-                <div id="turmasCheckbox">
-                    <!-- As checkboxes de turmas serão inseridas dinamicamente aqui -->
-                </div>
+                <div id="turmasCheckbox" style="display: inline-block;"></div>
             </div>
             <button type="submit">Cadastrar</button>
         </form>
@@ -58,7 +137,6 @@
                 // Adiciona a checkbox e a label ao div de checkboxes
                 turmasCheckboxDiv.appendChild(checkbox);
                 turmasCheckboxDiv.appendChild(label);
-                turmasCheckboxDiv.appendChild(document.createElement('br')); // Adiciona uma quebra de linha
             });
         }
 
@@ -78,61 +156,3 @@
 </body>
 
 </html>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #F2F2F2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .container {
-        width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    h1 {
-        color: #4A90E2;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        margin-top: 15px;
-        color: #000;
-    }
-
-    input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button {
-        width: 100%;
-        padding: 10px;
-        background-color: #4A90E2;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 15px;
-    }
-
-    button:hover {
-        background-color: #357ABD;
-    }
-</style>

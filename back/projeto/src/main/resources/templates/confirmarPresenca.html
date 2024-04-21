@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Exibir Presença</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Presença dos Alunos</h1>
+        <!-- Formulário para enviar a presença dos alunos -->
+        <form id="formPresenca" action="/confirmarPresenca" method="POST">
+            <label for="date">Data</label>
+            <input type="date" id="date" name="dataPresenca" required>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Presente</th>
+                        <th>Ausente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iteração sobre os alunos para exibi-los na tabela -->
+                    <tr th:each="aluno : ${alunos}">
+                        <td th:text="${aluno.nome}">Nome</td>
+                        <!-- Adicionando checkboxes para selecionar a presença -->
+                        <td><input type="checkbox" name="presenca" class="checkbox" value="presente"></td>
+                        <td><input type="checkbox" name="presenca" class="checkbox" value="ausente"></td>
+                        <!-- Adicione um campo oculto para enviar o ID do aluno -->
+                        <input type="hidden" name="idAluno" th:value="${aluno.idAluno}" />
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Botão para enviar a presença após validação -->
+            <button type="button" id="enviarPresenca" onclick="validarPresenca()">Enviar Presença</button>
+        </form>
+    </div>
+    
+    <script>
+        function validarPresenca() {
+            // Seleciona todas as linhas da tabela
+            const rows = document.querySelectorAll('tbody tr');
+            let todasLinhasValidas = true;
+
+            // Verifica se pelo menos uma checkbox foi selecionada em cada linha
+            rows.forEach(row => {
+                const checkboxes = row.querySelectorAll('.checkbox');
+                let peloMenosUmaSelecionada = false;
+
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        peloMenosUmaSelecionada = true;
+                    }
+                });
+
+                // Se nenhuma checkbox foi selecionada na linha, marca como inválida
+                if (!peloMenosUmaSelecionada) {
+                    todasLinhasValidas = false;
+                }
+            });
+
+            // Se todas as linhas forem válidas, permite enviar
+            if (todasLinhasValidas) {
+                document.getElementById('formPresenca').submit();
+            } else {
+                alert("Selecione pelo menos uma opção de presença por aluno.");
+            }
+        }
+    </script>
+</body>
+</html>
