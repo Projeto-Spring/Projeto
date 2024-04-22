@@ -82,12 +82,15 @@ public class PessoaController {
                         return "redirect:/pagina_de_erro";
                 }
             } else {
-                // Se a nova senha não atender aos critérios de validação, exibe uma mensagem de erro
-                model.addAttribute("error", "A senha deve conter pelo menos 8 caracteres, incluindo números, letras maiúsculas, letras minúsculas e caracteres especiais.");
+                // Se a nova senha não atender aos critérios de validação, exibe uma mensagem de
+                // erro
+                model.addAttribute("error",
+                        "A senha deve conter pelo menos 8 caracteres, incluindo números, letras maiúsculas, letras minúsculas e caracteres especiais.");
                 return "login"; // Redireciona o usuário de volta para a página de atualização de senha
             }
         } else {
-            // Se o CPF do usuário não estiver na sessão, redireciona-o para a página de erro
+            // Se o CPF do usuário não estiver na sessão, redireciona-o para a página de
+            // erro
             return "redirect:/pagina_de_erro";
         }
     }
@@ -144,10 +147,10 @@ public class PessoaController {
 
     @PostMapping("/validarCadastroAdmin")
     public String validarCadastroAdmin(@RequestParam String nome,
-                                       @RequestParam Date data_nascimento,
-                                       @RequestParam String cpf,
-                                       @RequestParam String tipoUsuario,
-                                       HttpSession session, Model model) {
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            HttpSession session, Model model) {
         if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             if (!pessoaRepository.verificarCpf(cpf)) {
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
@@ -172,11 +175,11 @@ public class PessoaController {
 
     @PostMapping("/validarCadastroAluno")
     public String validarCadastroAluno(@RequestParam String nome,
-                                       @RequestParam Date data_nascimento,
-                                       @RequestParam String cpf,
-                                       @RequestParam String tipoUsuario,
-                                       @RequestParam List<Integer> idTurmas,
-                                       HttpSession session, Model model) {
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            @RequestParam List<Integer> idTurmas,
+            HttpSession session, Model model) {
         if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             if (!pessoaRepository.verificarCpf(cpf)) {
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
@@ -215,10 +218,10 @@ public class PessoaController {
 
     @PostMapping("/validarCadastroProfessor")
     public String validarCadastroProfessor(@RequestParam String nome,
-                                           @RequestParam Date data_nascimento,
-                                           @RequestParam String cpf,
-                                           @RequestParam String tipoUsuario,
-                                           HttpSession session, Model model) {
+            @RequestParam Date data_nascimento,
+            @RequestParam String cpf,
+            @RequestParam String tipoUsuario,
+            HttpSession session, Model model) {
         if (nome != null && data_nascimento != null && cpf != null && tipoUsuario != null) {
             if (!pessoaRepository.verificarCpf(cpf)) {
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
@@ -243,9 +246,9 @@ public class PessoaController {
 
     @PostMapping("/validarCadastroTurma")
     public String validarCadastroTurma(@RequestParam String serie,
-                                       @RequestParam String cpf,
-                                       @RequestParam String disciplina,
-                                       HttpSession session, Model model) {
+            @RequestParam String cpf,
+            @RequestParam String disciplina,
+            HttpSession session, Model model) {
         if (pessoaRepository.verificarCpfProfessor(cpf)) {
             int idProfessor = pessoaRepository.obterIdProfessorPorCpf(cpf);
             session.setAttribute("cpf", cpf);
@@ -311,9 +314,9 @@ public class PessoaController {
 
     @PostMapping("/confirmarPresenca")
     public String confirmarPresenca(@RequestParam int idTurma,
-                                    @RequestParam Date dataPresenca,
-                                    @RequestParam List<String> situacao,
-                                    Model model) {
+            @RequestParam Date dataPresenca,
+            @RequestParam List<String> situacao,
+            Model model) {
         List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
         if (!alunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null && !situacao.isEmpty()) {
             if (pessoaRepository.existeChamadaParaData(idTurma, dataPresenca)) {
@@ -321,7 +324,8 @@ public class PessoaController {
                 return "login";
             } else {
                 for (Aluno aluno : alunos) {
-                    Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca, situacao.get(alunos.indexOf(aluno)), idTurma);
+                    Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca,
+                            situacao.get(alunos.indexOf(aluno)), idTurma);
                     pessoaRepository.save(presenca);
                 }
                 return "redirect:/homeProfessor";
