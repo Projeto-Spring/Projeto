@@ -50,7 +50,7 @@ public class PessoaController {
                 return "criarSenha.html";
             }
         } else {
-            model.addAttribute("error", "CPF não cadastrado");
+            model.addAttribute("erro", "CPF não cadastrado");
             return "login";
         }
     }
@@ -84,7 +84,7 @@ public class PessoaController {
             } else {
                 // Se a nova senha não atender aos critérios de validação, exibe uma mensagem de
                 // erro
-                model.addAttribute("error",
+                model.addAttribute("erro",
                         "A senha deve conter pelo menos 8 caracteres, incluindo números, letras maiúsculas, letras minúsculas e caracteres especiais.");
                 return "login"; // Redireciona o usuário de volta para a página de atualização de senha
             }
@@ -134,7 +134,7 @@ public class PessoaController {
                     return "pagina_de_erro";
             }
         } else {
-            model.addAttribute("error", "Senha incorreta");
+            model.addAttribute("erro", "Senha incorreta");
             model.addAttribute("cpf", cpf);
             return "login";
         }
@@ -159,12 +159,12 @@ public class PessoaController {
                 pessoaRepository.save(pessoa);
                 return "redirect:/homeAdmin";
             } else {
-                model.addAttribute("error", "CPF já cadastrado");
-                return "login";
+                model.addAttribute("erro", "CPF já cadastrado");
+                return "paginaDeErro";
             }
         } else {
-            model.addAttribute("error", "Todos os campos são obrigatórios");
-            return "login";
+            model.addAttribute("erro", "Todos os campos são obrigatórios");
+            return "paginaDeErro";
         }
     }
 
@@ -193,12 +193,12 @@ public class PessoaController {
                 }
                 return "redirect:/homeAdmin";
             } else {
-                model.addAttribute("error", "CPF já cadastrado");
-                return "login";
+                model.addAttribute("erro", "CPF já cadastrado");
+                return "paginaDeErro";
             }
         } else {
-            model.addAttribute("error", "Todos os campos são obrigatórios");
-            return "login";
+            model.addAttribute("erro", "Todos os campos são obrigatórios");
+            return "paginaDeErro";
         }
     }
 
@@ -230,12 +230,12 @@ public class PessoaController {
                 pessoaRepository.save(pessoa);
                 return "redirect:/homeAdmin";
             } else {
-                model.addAttribute("error", "CPF já cadastrado");
-                return "login";
+                model.addAttribute("erro", "CPF já cadastrado");
+                return "paginaDeErro";
             }
         } else {
-            model.addAttribute("error", "Todos os campos são obrigatórios");
-            return "login";
+            model.addAttribute("erro", "Todos os campos são obrigatórios");
+            return "paginaDeErro";
         }
     }
 
@@ -257,8 +257,8 @@ public class PessoaController {
             pessoaRepository.save(turma);
             return "redirect:/homeAdmin";
         } else {
-            model.addAttribute("error", "CPF do professor não encontrado");
-            return "login";
+            model.addAttribute("erro", "CPF do professor não encontrado");
+            return "paginaDeErro";
         }
     }
 
@@ -266,8 +266,8 @@ public class PessoaController {
     public String mostrarTurmasDoProfessor(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
         if (cpfLogado == null) {
-            model.addAttribute("erro", "CPF do professor não encontrado na sessão.");
-            return "error";
+            model.addAttribute("erro", "CPF logado não foi encontrado");
+            return "paginaDeErro";
         }
         model.addAttribute("cpfLogado", cpfLogado);
         List<Turma> turmas = pessoaRepository.findTurmasByProfessorCpf(cpfLogado);
@@ -320,8 +320,8 @@ public class PessoaController {
         List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
         if (!alunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null && !situacao.isEmpty()) {
             if (pessoaRepository.existeChamadaParaData(idTurma, dataPresenca)) {
-                model.addAttribute("error", "Já existe uma chamada para essa turma na mesma data.");
-                return "login";
+                model.addAttribute("erro", "Já existe uma chamada para essa turma na mesma data.");
+                return "paginaDeErro";
             } else {
                 for (Aluno aluno : alunos) {
                     Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca,
@@ -331,7 +331,7 @@ public class PessoaController {
                 return "redirect:/homeProfessor";
             }
         } else {
-            model.addAttribute("error", "Todos os campos são obrigatórios");
+            model.addAttribute("erro", "Todos os campos são obrigatórios");
             return "paginaDeErro";
         }
     }

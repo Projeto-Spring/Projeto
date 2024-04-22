@@ -19,15 +19,11 @@
             </div>
             <button type="submit">Entrar</button>
         </form>
-        <!-- Esta parte precisa de uma configuração de Thymeleaf para funcionar -->
-        <p th:text="${error}"></p>
- 
-        <!-- Adicionando script para formatação de CPF -->
+        <p th:text="${erro}"></p>
         <script>
-            // Função para formatar CPF conforme o usuário digita
             document.getElementById('cpf').addEventListener('input', function (e) {
                 let cpf = e.target.value.replace(/\D/g, '');
-                cpf = cpf.substring(0, 11); // Limita o CPF a 11 dígitos
+                cpf = cpf.substring(0, 11);
                 cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
                 cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
                 cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
@@ -37,31 +33,29 @@
     </div>
 </body>
  
-<style>/* Definições globais */
+<style>
     body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #F2F2F2; /* Fundo cinza-claro */
+        background-color: #F2F2F2;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh; /* Centralização vertical */
+        height: 100vh;
     }
-   
-    /* Container */
+
     .container {
         width: 100%;
         max-width: 400px;
         padding: 20px;
-        background-color: white; /* Fundo branco para contraste */
+        background-color: white;
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
    
-    /* Cabeçalho */
     h1 {
-        color: #4A90E2; /* Azul-claro */
+        color: #4A90E2;
         text-align: center;
         margin-bottom: 20px;
     }
