@@ -417,13 +417,20 @@ public class PessoaController {
         // Verifica se os parâmetros são válidos
         List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
         if (!alunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null && !situacao.isEmpty()) {
-            // Itera sobre os alunos e cria os registros de presença
-            for (Aluno aluno : alunos) {
-                Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca, situacao.get(alunos.indexOf(aluno)), idTurma);
-                pessoaRepository.save(presenca);
+            // Verifica se já existe uma presença para essa turma na mesma data
+            if (pessoaRepository.existeChamadaParaData(idTurma, dataPresenca)) {
+                // Se já existir uma chamada para essa turma na mesma data, exibe uma mensagem de erro
+                model.addAttribute("error", "Já existe uma chamada para essa turma na mesma data.");
+                return "login"; // Substitua "paginaDeErro" pelo nome da página de erro que você deseja exibir
+            } else {
+                // Itera sobre os alunos e cria os registros de presença
+                for (Aluno aluno : alunos) {
+                    Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca, situacao.get(alunos.indexOf(aluno)), idTurma);
+                    pessoaRepository.save(presenca);
+                }
+                // Redireciona para a página do professor após o cadastro de presenças
+                return "redirect:/homeProfessor";
             }
-            // Redireciona para a página do professor após o cadastro de presenças
-            return "redirect:/homeProfessor";
         } else {
             // Se algum parâmetro estiver ausente, exibe uma mensagem de erro
             model.addAttribute("error", "Todos os campos são obrigatórios");
@@ -431,7 +438,28 @@ public class PessoaController {
         }
     }
     
+    @GetMapping("/exibirPresencaAluno")
+    public String exibirPresencasDoAluno(Model model, HttpSession session) {
+        // Recupera o ID do aluno da sessão
+        Integer idAluno = (Integer) session.getAttribute("idAluno");
     
+        // Verifica se o ID do aluno recuperado da sessão é nulo
+        if (idAluno == null) {
+            // Adiciona uma mensagem de erro ao modelo
+            model.addAttribute("erro", "ID do aluno não encontrado na sessão.");
+            return "error"; // Por exemplo, redireciona para uma página de erro
+        }
     
+        // Adiciona o ID do aluno ao modelo para alerta
+        model.addAttribute("idAluno", idAluno);
+    
+        // Recupera as presenças do aluno
+        List<Presenca> presencas = pessoaRepository.buscarPresencasDoAlunoAtual(idAluno);
+    
+        // Adiciona as presenças ao modelo
+        model.addAttribute("presencas", presencas);
+    
+        return "exibirPresencaAluno";
+    }
     
 }

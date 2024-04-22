@@ -1,5 +1,6 @@
 package com.projeto.repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.projeto.model.Admin;
@@ -40,4 +41,6 @@ public interface PessoaRepository {
     void save(Presenca presenca);
     List<Aluno> procurarAlunosPorIdTurma(int idTurma);
     boolean existeTurma(int idTurma);
+    boolean existeChamadaParaData(int idTurma, Date dataPresenca);
+    List<Presenca> buscarPresencasDoAlunoAtual(int idAluno);
 }

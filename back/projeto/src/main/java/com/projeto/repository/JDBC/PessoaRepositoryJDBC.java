@@ -8,6 +8,7 @@ import com.projeto.model.Professor;
 import com.projeto.model.Turma;
 import com.projeto.model.TurmaAlunos;
 
+import java.sql.Date;
 import java.util.List;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -248,5 +249,15 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         return count > 0;
     }
 
+    public boolean existeChamadaParaData(int idTurma, Date dataPresenca) {
+        String sql = "SELECT COUNT(*) FROM presenca WHERE idTurma = ? AND data_presenca = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma, dataPresenca);
+        return count > 0;
+    }
+    
+    public List<Presenca> buscarPresencasDoAlunoAtual(int idAluno) {
+        String sql = "SELECT * FROM presenca WHERE idAluno = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Presenca.class), idAluno);
+    }
     
 }

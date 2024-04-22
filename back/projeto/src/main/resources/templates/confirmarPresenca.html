@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Confirmar Presença</h1>
-        <form action="/confirmarPresenca" method="POST" onsubmit="return validarPresenca()">
+        <form action="/confirmarPresenca" method="POST">
             <!-- Campo oculto para enviar o ID da turma -->
             <input type="hidden" name="idTurma" th:value="${idTurma}" />
             
@@ -27,14 +27,14 @@
                     <!-- Iteração sobre os alunos para exibi-los na tabela -->
                     <tr th:each="aluno : ${alunos}">
                         <td th:text="${aluno.nome}">Nome</td>
-                        <!-- Adicionando radio buttons para selecionar a presença -->
+                        <!-- Adicionando input hidden para enviar o ID do aluno -->
+                        <input type="hidden" name="idAluno" th:value="${aluno.idAluno}" />
+                        <!-- Adicionando select para selecionar a situação de cada aluno -->
                         <td>
-                            <input type="radio" name="situacao" class="radio" value="presente">
-                            <label for="presente">Presente</label>
-                            <input type="radio" name="situacao" class="radio" value="ausente">
-                            <label for="ausente">Ausente</label>
-                            <!-- Adicione um campo oculto para enviar o ID do aluno -->
-                            <input type="hidden" name="idAluno" th:value="${aluno.idAluno}" />
+                            <select name="situacao" required>
+                                <option value="presente">Presente</option>
+                                <option value="ausente">Ausente</option>
+                            </select>
                         </td>
                     </tr>
                 </tbody>
@@ -46,18 +46,18 @@
     
     <script>
         function validarPresenca() {
-            // Seleciona todos os radio buttons de presença
-            const radioButtons = document.querySelectorAll('.radio');
+            // Seleciona todos os checkboxes de presença
+            const checkboxes = document.querySelectorAll('.checkbox');
             
             let algumSelecionado = false;
 
-            radioButtons.forEach(radio => {
-                if (radio.checked) {
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
                     algumSelecionado = true;
                 }
             });
 
-            // Verifica se pelo menos um radio button foi selecionado
+            // Verifica se pelo menos um checkbox foi selecionado
             if (algumSelecionado) {
                 return true;
             } else {

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presenças do Aluno</title>
+</head>
+<body>
+    <h1>Presenças do Aluno</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Presença</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through presencas -->
+            <tr th:each="presenca : ${presencas}">
+                <td th:text="${presenca.data}"></td>
+                <td th:text="${presenca.presenca}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
