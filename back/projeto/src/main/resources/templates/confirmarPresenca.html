@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Confirmar Presença</h1>
-        <form action="/confirmarPresenca" method="POST">
+        <form action="/confirmarPresenca" method="POST" onsubmit="return validarPresenca()">
             <!-- Campo oculto para enviar o ID da turma -->
             <input type="hidden" name="idTurma" th:value="${idTurma}" />
             
@@ -20,19 +20,22 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Presente</th>
-                        <th>Ausente</th>
+                        <th>Presença</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Iteração sobre os alunos para exibi-los na tabela -->
                     <tr th:each="aluno : ${alunos}">
                         <td th:text="${aluno.nome}">Nome</td>
-                        <!-- Adicionando checkboxes para selecionar a presença -->
-                        <td><input type="checkbox" name="situacao" class="checkbox" value="presente"></td>
-                        <td><input type="checkbox" name="situacao" class="checkbox" value="ausente"></td>
-                        <!-- Adicione um campo oculto para enviar o ID do aluno -->
-                        <input type="hidden" name="idAluno" th:value="${aluno.idAluno}" />
+                        <!-- Adicionando radio buttons para selecionar a presença -->
+                        <td>
+                            <input type="radio" name="situacao" class="radio" value="presente">
+                            <label for="presente">Presente</label>
+                            <input type="radio" name="situacao" class="radio" value="ausente">
+                            <label for="ausente">Ausente</label>
+                            <!-- Adicione um campo oculto para enviar o ID do aluno -->
+                            <input type="hidden" name="idAluno" th:value="${aluno.idAluno}" />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -43,32 +46,23 @@
     
     <script>
         function validarPresenca() {
-            // Seleciona todas as linhas da tabela
-            const rows = document.querySelectorAll('tbody tr');
-            let todasLinhasValidas = true;
+            // Seleciona todos os radio buttons de presença
+            const radioButtons = document.querySelectorAll('.radio');
+            
+            let algumSelecionado = false;
 
-            // Verifica se pelo menos uma checkbox foi selecionada em cada linha
-            rows.forEach(row => {
-                const checkboxes = row.querySelectorAll('.checkbox');
-                let peloMenosUmaSelecionada = false;
-
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        peloMenosUmaSelecionada = true;
-                    }
-                });
-
-                // Se nenhuma checkbox foi selecionada na linha, marca como inválida
-                if (!peloMenosUmaSelecionada) {
-                    todasLinhasValidas = false;
+            radioButtons.forEach(radio => {
+                if (radio.checked) {
+                    algumSelecionado = true;
                 }
             });
 
-            // Se todas as linhas forem válidas, permite enviar
-            if (todasLinhasValidas) {
-                document.getElementById('formPresenca').submit();
+            // Verifica se pelo menos um radio button foi selecionado
+            if (algumSelecionado) {
+                return true;
             } else {
-                alert("Selecione pelo menos uma opção de presença por aluno.");
+                alert("Selecione a presença para pelo menos um aluno.");
+                return false;
             }
         }
     </script>
