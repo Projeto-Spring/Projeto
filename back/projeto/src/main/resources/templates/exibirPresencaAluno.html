@@ -63,12 +63,14 @@
                 <tr>
                     <th>Data</th>
                     <th>Presença</th>
+                    <th>IdTurma</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="presenca : ${presencas}">
                     <td th:text="${#dates.format(presenca.dataPresenca, 'dd/MM/yyyy')}"></td>
                     <td th:text="${presenca.situacao}"></td>
+                    <td th:text="${presenca.idTurma}"></td>
                 </tr>
             </tbody>
         </table>

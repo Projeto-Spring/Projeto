@@ -243,21 +243,23 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
                 "WHERE ta.idTurma = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Aluno.class), idTurma);
     }
+    @Override
     public boolean existeTurma(int idTurma) {
         String sql = "SELECT COUNT(*) FROM Turma WHERE idTurma = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma);
         return count > 0;
     }
-
+    @Override
     public boolean existeChamadaParaData(int idTurma, Date dataPresenca) {
         String sql = "SELECT COUNT(*) FROM presenca WHERE idTurma = ? AND data_presenca = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma, dataPresenca);
         return count > 0;
     }
     
+    @Override
     public List<Presenca> buscarPresencasDoAlunoAtual(int idAluno) {
-        String sql = "SELECT * FROM presenca WHERE idAluno = ?";
+        String sql = "SELECT * FROM presenca WHERE idAluno = ? ORDER BY data_presenca";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Presenca.class), idAluno);
     }
-    
+
 }
