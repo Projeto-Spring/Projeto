@@ -231,7 +231,7 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
 
     @Override
     public void save(Presenca presenca) {
-        String sql = "INSERT INTO presenca (idAluno, idTurma, dataPresenca, situacao) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO presenca (idAluno, idTurma, data_presenca, situacao) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, presenca.getIdAluno(), presenca.getIdTurma(), presenca.getDataPresenca(), presenca.getSituacao());
     }
 
@@ -247,4 +247,6 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma);
         return count > 0;
     }
+
+    
 }

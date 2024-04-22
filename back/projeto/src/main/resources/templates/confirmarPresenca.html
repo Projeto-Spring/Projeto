@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Exibir Presença</title>
+    <title>Confirmar Presença</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
-        <h1>Presença dos Alunos</h1>
-        <!-- Formulário para enviar a presença dos alunos -->
-        <form id="formPresenca" action="/confirmarPresenca" method="POST">
-            <label for="date">Data</label>
-            <input type="date" id="date" name="dataPresenca" required>
+        <h1>Confirmar Presença</h1>
+        <form action="/confirmarPresenca" method="POST">
+            <!-- Campo oculto para enviar o ID da turma -->
+            <input type="hidden" name="idTurma" th:value="${idTurma}" />
+            
+            <label for="dataPresenca">Data:</label>
+            <input type="date" id="dataPresenca" name="dataPresenca" required>
+
             <table>
                 <thead>
                     <tr>
@@ -26,15 +29,15 @@
                     <tr th:each="aluno : ${alunos}">
                         <td th:text="${aluno.nome}">Nome</td>
                         <!-- Adicionando checkboxes para selecionar a presença -->
-                        <td><input type="checkbox" name="presenca" class="checkbox" value="presente"></td>
-                        <td><input type="checkbox" name="presenca" class="checkbox" value="ausente"></td>
+                        <td><input type="checkbox" name="situacao" class="checkbox" value="presente"></td>
+                        <td><input type="checkbox" name="situacao" class="checkbox" value="ausente"></td>
                         <!-- Adicione um campo oculto para enviar o ID do aluno -->
                         <input type="hidden" name="idAluno" th:value="${aluno.idAluno}" />
                     </tr>
                 </tbody>
             </table>
             <!-- Botão para enviar a presença após validação -->
-            <button type="button" id="enviarPresenca" onclick="validarPresenca()">Enviar Presença</button>
+            <button type="submit">Enviar Presença</button>
         </form>
     </div>
     

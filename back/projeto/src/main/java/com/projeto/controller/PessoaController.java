@@ -398,6 +398,7 @@ public class PessoaController {
         // Verifica se o idTurma existe no banco de dados
         if (pessoaRepository.existeTurma(idTurma)) {
             List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
+            model.addAttribute("idTurma", idTurma); // Adiciona o ID da turma ao modelo
             model.addAttribute("alunos", alunos);
             return "confirmarPresenca";
         } else {
@@ -406,6 +407,7 @@ public class PessoaController {
             return "paginaDeErro"; // Substitua "paginaDeErro" pelo nome da página de erro que você deseja exibir
         }
     }
+    
 
     @PostMapping("/confirmarPresenca")
     public String confirmarPresenca(@RequestParam int idTurma,
@@ -414,11 +416,10 @@ public class PessoaController {
                                     Model model) {
         // Verifica se os parâmetros são válidos
         List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
-        if (idAlunos != null && !idAlunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null
-                && !situacao.isEmpty()) {
-            // Itera sobre a lista de alunos e situações
-            for (int i = 0; i < idAlunos.size(); i++) {
-                Presenca presenca = new Presenca(0, idAlunos.get(i), dataPresenca, situacao.get(i), idTurma);                                                                                          
+        if (!alunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null && !situacao.isEmpty()) {
+            // Itera sobre os alunos e cria os registros de presença
+            for (Aluno aluno : alunos) {
+                Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca, situacao.get(alunos.indexOf(aluno)), idTurma);
                 pessoaRepository.save(presenca);
             }
             // Redireciona para a página do professor após o cadastro de presenças
@@ -429,4 +430,8 @@ public class PessoaController {
             return "paginaDeErro"; // Substitua "paginaDeErro" pelo nome da página de erro que você deseja exibir
         }
     }
+    
+    
+    
+    
 }
