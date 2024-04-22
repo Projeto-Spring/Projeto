@@ -67,7 +67,7 @@
             </thead>
             <tbody>
                 <tr th:each="presenca : ${presencas}">
-                    <td th:text="${presenca.dataPresenca}"></td>
+                    <td th:text="${#dates.format(presenca.dataPresenca, 'dd/MM/yyyy')}"></td>
                     <td th:text="${presenca.situacao}"></td>
                 </tr>
             </tbody>
