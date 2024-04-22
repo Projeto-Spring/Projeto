@@ -18,6 +18,9 @@ public class Presenca {
         this.situacao = situacao;
         this.idTurma = idTurma;
     }
+    public Presenca(){
+        super();
+    }
     public int getIdPresenca() {
         return idPresenca;
     }

@@ -1,17 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Corrija os caminhos dos arquivos CSS e JS conforme necessário -->
     <link rel="stylesheet" type="text/css" media="screen" href="main.css">
     <script src="main.js"></script>
 </head>
 <body>
-    <!-- Corrija o link para apontar para a página correta de login -->
-    <a href="exibirTurmasAluno">Ver minhas turmas</a>
-    <a href="exibirPresencaAluno">Ver minhas presenças</a>
+    <div class="container">
+        <h1>Home</h1>
+        <a href="exibirTurmasAluno" class="button">Ver minhas turmas</a>
+        <a href="exibirPresencaAluno" class="button">Ver minhas presenças</a>
+    </div>
 </body>
 </html>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #F2F2F2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        color: #4A90E2;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .button {
+        width: 50%;
+        padding: 10px;
+        background-color: #4A90E2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        margin-bottom: 10px;
+    }
+</style>
