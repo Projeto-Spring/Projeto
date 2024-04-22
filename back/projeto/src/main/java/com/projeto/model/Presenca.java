@@ -2,7 +2,7 @@ package com.projeto.model;
 
 import java.sql.Date;
 
-// Classe Presenca
+
 public class Presenca {
     private int idPresenca;
     private int idAluno;

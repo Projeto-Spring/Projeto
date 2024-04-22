@@ -2,7 +2,7 @@ package com.projeto.model;
 
 import java.sql.Date;
 
-// Classe Pessoa
+
 public class Pessoa {
     private int idPessoa;
     private String nome;
@@ -11,7 +11,7 @@ public class Pessoa {
     private String tipoUsuario;
     private String senha;
 
-    // Construtor
+   
     public Pessoa(int idPessoa, String nome, Date dataNascimento, String cpf, String tipoUsuario, String senha) {
         this.idPessoa = idPessoa;
         this.nome = nome;
@@ -24,7 +24,7 @@ public class Pessoa {
     public Pessoa() {
     }
 
-    // Métodos getters e setters
+  
     public int getIdPessoa() {
         return idPessoa;
     }

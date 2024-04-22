@@ -38,19 +38,16 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         jdbcTemplate.update(sql, admin.getNome(), admin.getCpf());
     }
 
-    // Implemente o método findIdTurmaBySerie na classe PessoaRepositoryJDBC
     @Override
     public int findIdTurmaBySerie(String serie) {
         String sql = "SELECT idTurma FROM Turma WHERE serie = ?";
         try {
             return jdbcTemplate.queryForObject(sql, Integer.class, serie);
         } catch (EmptyResultDataAccessException e) {
-            return -1; // Ou lidar com o caso em que nenhuma turma é encontrada para a série fornecida
+            return -1;
         }
     }
 
-    // Atualize o método save na classe PessoaRepositoryJDBC para atribuir o idTurma
-    // ao aluno
     @Override
     public void save(Aluno aluno) {
         String sql = "INSERT INTO Aluno (Nome, CPF) VALUES (?, ?)";
@@ -118,7 +115,6 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
     @Override
     public boolean validarSenha(String cpf, String senha) {
         String sql = "SELECT COUNT(*) FROM pessoa WHERE cpf = ? AND senha = ?";
-
         return jdbcTemplate.queryForObject(sql, Integer.class, cpf, senha) > 0;
     }
 
@@ -145,7 +141,6 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         try {
             return jdbcTemplate.queryForObject(sql, Integer.class, cpf);
         } catch (EmptyResultDataAccessException e) {
-            // Retorna 0 se o CPF não for encontrado
             return 0;
         }
     }
@@ -196,7 +191,6 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
         try {
             return jdbcTemplate.queryForObject(sql, Integer.class, cpf);
         } catch (EmptyResultDataAccessException e) {
-            // Retorna 0 se o CPF não for encontrado
             return 0;
         }
     }
@@ -233,7 +227,8 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
     @Override
     public void save(Presenca presenca) {
         String sql = "INSERT INTO presenca (idAluno, idTurma, data_presenca, situacao) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, presenca.getIdAluno(), presenca.getIdTurma(), presenca.getDataPresenca(), presenca.getSituacao());
+        jdbcTemplate.update(sql, presenca.getIdAluno(), presenca.getIdTurma(), presenca.getDataPresenca(),
+                presenca.getSituacao());
     }
 
     @Override
@@ -243,23 +238,24 @@ public class PessoaRepositoryJDBC implements PessoaRepository {
                 "WHERE ta.idTurma = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Aluno.class), idTurma);
     }
+
     @Override
     public boolean existeTurma(int idTurma) {
         String sql = "SELECT COUNT(*) FROM Turma WHERE idTurma = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma);
         return count > 0;
     }
+
     @Override
     public boolean existeChamadaParaData(int idTurma, Date dataPresenca) {
         String sql = "SELECT COUNT(*) FROM presenca WHERE idTurma = ? AND data_presenca = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, idTurma, dataPresenca);
         return count > 0;
     }
-    
+
     @Override
     public List<Presenca> buscarPresencasDoAlunoAtual(int idAluno) {
         String sql = "SELECT * FROM presenca WHERE idAluno = ? ORDER BY data_presenca";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Presenca.class), idAluno);
     }
-
 }

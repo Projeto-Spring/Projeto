@@ -1,17 +1,14 @@
 package com.projeto.model;
 
-// Classe TurmaAlunos
 public class TurmaAlunos {
     private int idTurma;
     private int idAluno;
 
-    // Construtor
     public TurmaAlunos(int idTurma, int idAluno) {
         this.idTurma = idTurma;
         this.idAluno = idAluno;
     }
 
-    // Métodos getters e setters
     public int getIdTurma() {
         return idTurma;
     }

@@ -21,7 +21,6 @@ import com.projeto.model.Turma;
 import com.projeto.model.TurmaAlunos;
 import com.projeto.repository.JDBC.PessoaRepositoryJDBC;
 import com.projeto.Util.ValidaSenha;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -65,11 +64,8 @@ public class PessoaController {
     public String atualizarSenha(@RequestParam("novaSenha") String novaSenha, HttpSession session, Model model) {
         String cpf = (String) session.getAttribute("cpf");
         if (cpf != null) {
-            // Verifica se a nova senha atende aos critérios de validação
             if (ValidaSenha.validaSenha(novaSenha)) {
-                // Se a nova senha for válida, atualiza-a no banco de dados
                 pessoaRepository.atualizarSenhaPorCpf(cpf, novaSenha);
-                // Redireciona o usuário para a página inicial correspondente ao tipo de usuário
                 String tipoUsuario = pessoaRepository.buscarTipoUsuarioPorCpf(cpf);
                 switch (tipoUsuario) {
                     case "Aluno":
@@ -82,15 +78,11 @@ public class PessoaController {
                         return "redirect:/pagina_de_erro";
                 }
             } else {
-                // Se a nova senha não atender aos critérios de validação, exibe uma mensagem de
-                // erro
                 model.addAttribute("erro",
                         "A senha deve conter pelo menos 8 caracteres, incluindo números, letras maiúsculas, letras minúsculas e caracteres especiais.");
-                return "login"; // Redireciona o usuário de volta para a página de atualização de senha
+                return "login";
             }
         } else {
-            // Se o CPF do usuário não estiver na sessão, redireciona-o para a página de
-            // erro
             return "redirect:/pagina_de_erro";
         }
     }

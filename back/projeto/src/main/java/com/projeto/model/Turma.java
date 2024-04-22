@@ -1,13 +1,11 @@
 package com.projeto.model;
 
-// Classe Turma
 public class Turma {
     private int idTurma;
     private String serie;
     private int idProfessor;
     private String disciplina;
     
-    // Construtor padrão sem argumentos
     public Turma() {
     }
 

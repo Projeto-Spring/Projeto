@@ -12,12 +12,10 @@
             padding: 0;
             background-color: #F2F2F2;
             height: 100vh;
-            /* Definindo altura total da viewport */
             display: flex;
             justify-content: center;
-            /* Centralizando horizontalmente */
             align-items: center;
-            /* Centralizando verticalmente */
+
         }
 
         .container {
@@ -64,14 +62,13 @@
         input[type="checkbox"]+label {
             display: inline-block;
             margin-top: 0;
-            /* Removendo a margem superior */
         }
 
 
         input,
         select {
             width: calc(100% - 20px);
-            /* Ajustado para considerar a margem direita da checkbox */
+
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
@@ -81,7 +78,7 @@
 
         .form-group {
             display: inline-block;
-            /* Adicionado para manter os elementos em linha */
+
         }
 
         button {
@@ -130,47 +127,46 @@
         </form>
     </div>
     <script>
-        // Função para buscar e preencher as checkboxes de turmas
         async function carregarTurmas() {
             const response = await fetch('/buscarTurmas');
             const turmas = await response.json();
 
             const turmasCheckboxDiv = document.getElementById('turmasCheckbox');
-            turmasCheckboxDiv.innerHTML = ''; // Limpa o conteúdo existente
+            turmasCheckboxDiv.innerHTML = '';
 
-            // Adiciona as checkboxes de turmas
+
             if (turmas.length === 0) {
                 alert("Nenhuma turma encontrada.");
             } else {
                 turmas.forEach(turma => {
-                    const checkboxDiv = document.createElement('div'); // Novo elemento div para cada par de checkbox e label
-                    checkboxDiv.style.display = 'flex'; // Usando flexbox para controlar o layout
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.style.display = 'flex';
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.name = 'idTurmas'; // Use um array de IDs para permitir vários valores
+                    checkbox.name = 'idTurmas';
                     checkbox.value = turma.idTurma;
 
                     const label = document.createElement('label');
-                    label.textContent = turma.serie; // Mostra apenas a série da turma
+                    label.textContent = turma.serie;
 
-                    // Adiciona a checkbox e a label ao div de checkboxes
+
                     checkboxDiv.appendChild(checkbox);
                     checkboxDiv.appendChild(label);
 
-                    // Adiciona o div de checkbox ao contêiner principal
+
                     turmasCheckboxDiv.appendChild(checkboxDiv);
                 });
             }
         }
 
-        // Chama a função para carregar as turmas ao carregar a página
+
         document.addEventListener('DOMContentLoaded', carregarTurmas);
 
-        // Função para formatar CPF conforme o usuário digita
+
         document.getElementById('cpf').addEventListener('input', function (e) {
             let cpf = e.target.value.replace(/\D/g, '');
-            cpf = cpf.substring(0, 11); // Limita o CPF a 11 dígitos
+            cpf = cpf.substring(0, 11);
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
             cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');

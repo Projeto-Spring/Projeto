@@ -36,15 +36,15 @@
             const cpfInput = document.getElementById('cpf');
             const cpf = cpfInput.value.replace(/\D/g, '');
             if (cpf.length < 11) {
-                event.preventDefault(); // Impede o envio do formulário
+                event.preventDefault();
                 alert('O CPF não é válido. Por favor, insira um CPF válido com 11 dígitos.');
             }
         });
 
-        // Função para formatar CPF conforme o usuário digita
+
         document.getElementById('cpf').addEventListener('input', function (e) {
             let cpf = e.target.value.replace(/\D/g, '');
-            cpf = cpf.substring(0, 11); // Limita o CPF a 11 dígitos
+            cpf = cpf.substring(0, 11);
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
             cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');

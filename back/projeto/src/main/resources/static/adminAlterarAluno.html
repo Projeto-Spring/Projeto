@@ -16,59 +16,59 @@
             <div class="form-group">
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="nome" required>
-            
+
                 <label for="dob">Data de Nascimento</label>
                 <input type="date" id="dob" name="data_nascimento" required>
-            
+
                 <label for="cpf">CPF</label>
                 <input type="text" id="cpf" name="cpf" required maxlength="14">
-            
+
                 <label for="tipoUsuario">Tipo de Usuário</label>
                 <select id="tipoUsuario" name="tipoUsuario" required>
                     <option value="Aluno">Aluno</option>
                 </select>
-            
+
                 <label>Turmas</label>
                 <div id="turmasCheckbox">
-                    <!-- As checkboxes de turmas serão inseridas dinamicamente aqui -->
+
                 </div>
             </div>
             <button type="submit">Cadastrar</button>
         </form>
     </div>
     <script>
-        // Função para buscar e preencher as checkboxes de turmas
+
         async function carregarTurmas() {
             const response = await fetch('/buscarTurmas');
             const turmas = await response.json();
 
             const turmasCheckboxDiv = document.getElementById('turmasCheckbox');
-            turmasCheckboxDiv.innerHTML = ''; // Limpa o conteúdo existente
+            turmasCheckboxDiv.innerHTML = '';
 
-            // Adiciona as checkboxes de turmas
+
             turmas.forEach(turma => {
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.name = 'idTurmas'; // Use um array de IDs para permitir vários valores
+                checkbox.name = 'idTurmas';
                 checkbox.value = turma.idTurma;
 
                 const label = document.createElement('label');
-                label.textContent = turma.serie; // Mostra apenas a série da turma
+                label.textContent = turma.serie;
 
-                // Adiciona a checkbox e a label ao div de checkboxes
+
                 turmasCheckboxDiv.appendChild(checkbox);
                 turmasCheckboxDiv.appendChild(label);
-                turmasCheckboxDiv.appendChild(document.createElement('br')); // Adiciona uma quebra de linha
+                turmasCheckboxDiv.appendChild(document.createElement('br'));
             });
         }
 
-        // Chama a função para carregar as turmas ao carregar a página
+
         document.addEventListener('DOMContentLoaded', carregarTurmas);
 
-        // Função para formatar CPF conforme o usuário digita
+
         document.getElementById('cpf').addEventListener('input', function (e) {
             let cpf = e.target.value.replace(/\D/g, '');
-            cpf = cpf.substring(0, 11); // Limita o CPF a 11 dígitos
+            cpf = cpf.substring(0, 11);
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
             cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
