@@ -1,80 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formulário de Cadastro de Aluno</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>Cadastro de Aluno</h1>
-        <form id="cadastroForm" action="/validarCadastroAluno" method="POST">
-            <input type="hidden" name="CPF" value="${cpf}">
+      <h1>Cadastro de Aluno</h1>
+      <form id="cadastroForm" action="/validarCadastroAluno" method="POST">
+        <input type="hidden" name="CPF" value="${cpf}" />
 
-            <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="nome" required>
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="nome" required />
 
-                <label for="dob">Data de Nascimento</label>
-                <input type="date" id="dob" name="data_nascimento" required>
+          <label for="dob">Data de Nascimento</label>
+          <input type="date" id="dob" name="data_nascimento" required />
 
-                <label for="cpf">CPF</label>
-                <input type="text" id="cpf" name="cpf" required maxlength="14">
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" name="cpf" required maxlength="14" />
 
-                <label for="tipoUsuario">Tipo de Usuário</label>
-                <select id="tipoUsuario" name="tipoUsuario" required>
-                    <option value="Aluno">Aluno</option>
-                </select>
+          <label for="tipoUsuario">Tipo de Usuário</label>
+          <select id="tipoUsuario" name="tipoUsuario" required>
+            <option value="Aluno">Aluno</option>
+          </select>
 
-                <label>Turmas</label>
-                <div id="turmasCheckbox">
-
-                </div>
-            </div>
-            <button type="submit">Cadastrar</button>
-        </form>
+          <label>Turmas</label>
+          <div id="turmasCheckbox"></div>
+        </div>
+        <button type="submit">Cadastrar</button>
+      </form>
     </div>
     <script>
+      async function carregarTurmas() {
+        const response = await fetch("/buscarTurmas");
+        const turmas = await response.json();
 
-        async function carregarTurmas() {
-            const response = await fetch('/buscarTurmas');
-            const turmas = await response.json();
+        const turmasCheckboxDiv = document.getElementById("turmasCheckbox");
+        turmasCheckboxDiv.innerHTML = "";
 
-            const turmasCheckboxDiv = document.getElementById('turmasCheckbox');
-            turmasCheckboxDiv.innerHTML = '';
+        turmas.forEach((turma) => {
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.name = "idTurmas";
+          checkbox.value = turma.idTurma;
 
+          const label = document.createElement("label");
+          label.textContent = turma.serie;
 
-            turmas.forEach(turma => {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.name = 'idTurmas';
-                checkbox.value = turma.idTurma;
-
-                const label = document.createElement('label');
-                label.textContent = turma.serie;
-
-
-                turmasCheckboxDiv.appendChild(checkbox);
-                turmasCheckboxDiv.appendChild(label);
-                turmasCheckboxDiv.appendChild(document.createElement('br'));
-            });
-        }
-
-
-        document.addEventListener('DOMContentLoaded', carregarTurmas);
-
-
-        document.getElementById('cpf').addEventListener('input', function (e) {
-            let cpf = e.target.value.replace(/\D/g, '');
-            cpf = cpf.substring(0, 11);
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = cpf;
+          turmasCheckboxDiv.appendChild(checkbox);
+          turmasCheckboxDiv.appendChild(label);
+          turmasCheckboxDiv.appendChild(document.createElement("br"));
         });
-    </script>
-</body>
+      }
 
+      document.addEventListener("DOMContentLoaded", carregarTurmas);
+
+      document.getElementById("cpf").addEventListener("input", function (e) {
+        let cpf = e.target.value.replace(/\D/g, "");
+        cpf = cpf.substring(0, 11);
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        e.target.value = cpf;
+      });
+    </script>
+  </body>
 </html>

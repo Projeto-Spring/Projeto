@@ -2,7 +2,6 @@ package com.projeto.model;
 
 import java.sql.Date;
 
-
 public class Admin extends Pessoa {
     private int idAdmin;
 
@@ -12,7 +11,6 @@ public class Admin extends Pessoa {
         this.idAdmin = idAdmin;
     }
 
- 
     public int getIdAdmin() {
         return idAdmin;
     }

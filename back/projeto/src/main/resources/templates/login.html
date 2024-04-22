@@ -1,114 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt-br">
- 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Gerenciamento de Escola</title>
-</head>
- 
-<body>
+  </head>
+
+  <body>
     <div class="container">
-        <h1>Login</h1>
-        <form action="/login" method="post">
-            <div class="form-group">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
-            </div>
-            <button type="submit">Entrar</button>
-        </form>
-        <p th:text="${erro}"></p>
-        <script>
-            document.getElementById('cpf').addEventListener('input', function (e) {
-                let cpf = e.target.value.replace(/\D/g, '');
-                cpf = cpf.substring(0, 11);
-                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-                cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-                cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                e.target.value = cpf;
-            });
-        </script>
+      <h1>Login</h1>
+      <form action="/login" method="post">
+        <div class="form-group">
+          <label for="cpf">CPF:</label>
+          <input
+            type="text"
+            id="cpf"
+            name="cpf"
+            placeholder="Digite seu CPF"
+            required
+          />
+        </div>
+        <button type="submit">Entrar</button>
+      </form>
+      <p th:text="${erro}"></p>
+      <script>
+        document.getElementById("cpf").addEventListener("input", function (e) {
+          let cpf = e.target.value.replace(/\D/g, "");
+          cpf = cpf.substring(0, 11);
+          cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+          cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+          cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+          e.target.value = cpf;
+        });
+      </script>
     </div>
-</body>
- 
-<style>
+  </body>
+
+  <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #F2F2F2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
     .container {
-        width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
-   
+
     h1 {
-        color: #4A90E2;
-        text-align: center;
-        margin-bottom: 20px;
+      color: #4a90e2;
+      text-align: center;
+      margin-bottom: 20px;
     }
-   
+
     /* Grupo de formulário */
     .form-group {
-        margin-bottom: 15px;
+      margin-bottom: 15px;
     }
-   
+
     /* Rótulos */
     label {
-        display: block;
-        margin-bottom: 5px;
-        color: #000; /* Preto */
+      display: block;
+      margin-bottom: 5px;
+      color: #000; /* Preto */
     }
-   
+
     /* Campos de entrada */
     input {
-        width: 100%; /* Campos de entrada na largura total */
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box; /* Para garantir a largura */
+      width: 100%; /* Campos de entrada na largura total */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; /* Para garantir a largura */
     }
-   
+
     /* Botão */
     button {
-        width: 100%;
-        padding: 10px;
-        background-color: #4A90E2; /* Azul-claro */
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
+      width: 100%;
+      padding: 10px;
+      background-color: #4a90e2; /* Azul-claro */
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
     }
-   
+
     button:hover {
-        background-color: #357ABD; /* Tom mais escuro de azul */
+      background-color: #357abd; /* Tom mais escuro de azul */
     }
-   
+
     /* Link "Esqueceu sua senha?" */
     .forgot-password {
-        display: block;
-        margin-top: 10px; /* Adiciona espaço entre o botão e o link */
-        text-align: center; /* Centraliza o link */
-        color: #4A90E2; /* Azul-claro */
-        text-decoration: none; /* Remove o sublinhado */
-        font-size: 14px; /* Fonte menor */
+      display: block;
+      margin-top: 10px; /* Adiciona espaço entre o botão e o link */
+      text-align: center; /* Centraliza o link */
+      color: #4a90e2; /* Azul-claro */
+      text-decoration: none; /* Remove o sublinhado */
+      font-size: 14px; /* Fonte menor */
     }
-   
+
     .forgot-password:hover {
-        text-decoration: underline; /* Sublinha o link ao passar o mouse */
+      text-decoration: underline; /* Sublinha o link ao passar o mouse */
     }
-    </style>
- 
+  </style>
 </html>
