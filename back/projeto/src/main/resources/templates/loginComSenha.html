@@ -1,99 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Login</h1>
-        <form action="/validarSenha" method="POST">
-            <input type="hidden" name="cpf" value="${cpf}">
-            <div class="form-group">
-                <label for="password">Insira sua senha</label>
-                <input type="password" id="password" name="senha" required>
-            </div>
-            <button type="submit">Enviar</button>
-        </form>                                 
+      <h1>Login</h1>
+      <form action="/validarSenha" method="POST">
+        <input type="hidden" name="cpf" value="${cpf}" />
+        <div class="form-group">
+          <label for="password">Insira sua senha</label>
+          <input type="password" id="password" name="senha" required />
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
     </div>
-</body>
+  </body>
 </html>
 <style>
-    body {
+  body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #F2F2F2;
+    background-color: #f2f2f2;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    }
- 
-    /* Container */
-    .container {
-        width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        background-color: white; 
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    
+  }
 
-    h1 {
-        color: #4A90E2; 
-        text-align: center;
-        margin-bottom: 20px;
-    }
+  /* Container */
+  .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
 
-    .form-group {
-        margin-bottom: 15px;
-    }
-    
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: #000;
-    }
-    
-          
-    input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;                 
-    }
-    
-    button {
-        width: 100%;
-        padding: 10px;
-        background-color: #4A90E2;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-    
-    button:hover {
-        background-color: #357ABD;
-    }
-    
- 
-    .forgot-password {
-        display: block;
-        margin-top: 10px; 
-        text-align: center; 
-        color: #4A90E2; 
-        text-decoration: none; 
-        font-size: 14px; 
-    }
-    
-    .forgot-password:hover {
-        text-decoration: underline; 
-    }
-    </style>
+  h1 {
+    color: #4a90e2;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #000;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background-color: #357abd;
+  }
+
+  .forgot-password {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    color: #4a90e2;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+</style>

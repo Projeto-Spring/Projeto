@@ -1,110 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Turma</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>Cadastro de Turma</h1>
-        <form id="cadastroForm" action="/validarCadastroTurma" method="POST">
-            <div class="form-group">
-                <label for="serie">Série</label>
-                <input type="text" id="serie" name="serie" required>
-            </div>
-            <div class="form-group">
-                <label for="cpfProfessor">CPF do Professor</label>
-                <input type="text" id="cpf" name="cpf" required>
-            </div>
-            <div class="form-group">
-                <label for="dob">Disciplina</label>
-                <input type="text" id="text" name="disciplina" required>
-            </div>
-            <button type="submit">Cadastrar</button>
-        </form>
+      <h1>Cadastro de Turma</h1>
+      <form id="cadastroForm" action="/validarCadastroTurma" method="POST">
+        <div class="form-group">
+          <label for="serie">Série</label>
+          <input type="text" id="serie" name="serie" required />
+        </div>
+        <div class="form-group">
+          <label for="cpfProfessor">CPF do Professor</label>
+          <input type="text" id="cpf" name="cpf" required />
+        </div>
+        <div class="form-group">
+          <label for="dob">Disciplina</label>
+          <input type="text" id="text" name="disciplina" required />
+        </div>
+        <button type="submit">Cadastrar</button>
+      </form>
     </div>
 
     <script>
-        document.getElementById('cadastroForm').addEventListener('submit', function (event) {
-            const cpfInput = document.getElementById('cpf');
-            const cpf = cpfInput.value.replace(/\D/g, '');
-            if (cpf.length < 11) {
-                event.preventDefault();
-                alert('O CPF não é válido. Por favor, insira um CPF válido com 11 dígitos.');
-            }
+      document
+        .getElementById("cadastroForm")
+        .addEventListener("submit", function (event) {
+          const cpfInput = document.getElementById("cpf");
+          const cpf = cpfInput.value.replace(/\D/g, "");
+          if (cpf.length < 11) {
+            event.preventDefault();
+            alert(
+              "O CPF não é válido. Por favor, insira um CPF válido com 11 dígitos."
+            );
+          }
         });
 
-
-        document.getElementById('cpf').addEventListener('input', function (e) {
-            let cpf = e.target.value.replace(/\D/g, '');
-            cpf = cpf.substring(0, 11);
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = cpf;
-        });
+      document.getElementById("cpf").addEventListener("input", function (e) {
+        let cpf = e.target.value.replace(/\D/g, "");
+        cpf = cpf.substring(0, 11);
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+        cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        e.target.value = cpf;
+      });
     </script>
-</body>
-
+  </body>
 </html>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #F2F2F2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
-    .container {
-        width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
+  .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
 
-    h1 {
-        color: #4A90E2;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+  h1 {
+    color: #4a90e2;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-    label {
-        display: block;
-        margin-top: 15px;
-        color: #000;
-    }
+  label {
+    display: block;
+    margin-top: 15px;
+    color: #000;
+  }
 
-    input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        background-color: #4A90E2;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 15px;
-    }
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+  }
 
-    button:hover {
-        background-color: #357ABD;
-    }
+  button:hover {
+    background-color: #357abd;
+  }
 </style>

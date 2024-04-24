@@ -5,7 +5,7 @@ public class Turma {
     private String serie;
     private int idProfessor;
     private String disciplina;
-    
+
     public Turma() {
     }
 

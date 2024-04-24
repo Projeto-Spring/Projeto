@@ -1,164 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formulário de Cadastro de Aluno</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #F2F2F2;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-        }
+      .container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+      }
 
-        .container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            overflow-y: auto;
-        }
+      h1 {
+        color: #4a90e2;
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-        h1 {
-            color: #4A90E2;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+      label {
+        display: block;
+        margin-top: 15px;
+        color: #000;
+      }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            color: #000;
-        }
+      input[type="checkbox"] {
+        display: inline-block;
+        margin-top: 15px;
+        margin-right: 5px;
+        vertical-align: middle;
+      }
 
-        input[type="checkbox"] {
-            display: inline-block;
-            margin-top: 15px;
-            margin-right: 5px;
-            vertical-align: middle;
-        }
+      input[type="checkbox"] + label {
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: 15px;
+      }
 
-        input[type="checkbox"]+label {
-            display: inline-block;
-            vertical-align: middle;
-            margin-top: 15px;
-        }
+      input[type="checkbox"],
+      input[type="checkbox"] + label {
+        display: inline-block;
+      }
 
-        input[type="checkbox"],
-        input[type="checkbox"]+label {
-            display: inline-block;
-        }
+      input[type="checkbox"],
+      input[type="checkbox"] + label {
+        display: inline-block;
+        margin-top: 0;
+      }
 
-        input[type="checkbox"],
-        input[type="checkbox"]+label {
-            display: inline-block;
-            margin-top: 0;
-        }
+      input,
+      select {
+        width: calc(100% - 20px);
 
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
 
-        input,
-        select {
-            width: calc(100% - 20px);
+      .form-group {
+        display: inline-block;
+      }
 
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 15px;
+      }
 
-        .form-group {
-            display: inline-block;
-
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4A90E2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
-        button:hover {
-            background-color: #357ABD;
-        }
+      button:hover {
+        background-color: #357abd;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>Cadastro de Aluno</h1>
-        <form id="cadastroForm" action="/validarCadastroAluno" method="POST">
-            <input type="hidden" name="CPF" value="${cpf}">
+      <h1>Cadastro de Aluno</h1>
+      <form id="cadastroForm" action="/validarCadastroAluno" method="POST">
+        <input type="hidden" name="CPF" value="${cpf}" />
 
-            <div class="form-group">
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="nome" required>
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="nome" required />
 
-                <label for="dob">Data de Nascimento</label>
-                <input type="date" id="dob" name="data_nascimento" required>
+          <label for="dob">Data de Nascimento</label>
+          <input type="date" id="dob" name="data_nascimento" required />
 
-                <label for="cpf">CPF</label>
-                <input type="text" id="cpf" name="cpf" required maxlength="14">
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" name="cpf" required maxlength="14" />
 
-                <label for="tipoUsuario">Tipo de Usuário</label>
-                <select id="tipoUsuario" name="tipoUsuario" required>
-                    <option value="Aluno">Aluno</option>
-                </select>
+          <label for="tipoUsuario">Tipo de Usuário</label>
+          <select id="tipoUsuario" name="tipoUsuario" required>
+            <option value="Aluno">Aluno</option>
+          </select>
 
-                <label>Turmas</label>
-                <div id="turmasCheckbox" style="display: inline-block;"></div>
-            </div>
-            <button type="submit">Cadastrar</button>
-        </form>
+          <label>Turmas</label>
+          <div id="turmasCheckbox" style="display: inline-block"></div>
+        </div>
+        <button type="submit">Cadastrar</button>
+      </form>
     </div>
     <script>
-        async function carregarTurmas() {
-            const response = await fetch('/buscarTurmas');
-            const turmas = await response.json();
+      async function carregarTurmas() {
+        const response = await fetch("/buscarTurmas");
+        const turmas = await response.json();
 
-            const turmasCheckboxDiv = document.getElementById('turmasCheckbox');
-            turmasCheckboxDiv.innerHTML = '';
+        const turmasCheckboxDiv = document.getElementById("turmasCheckbox");
+        turmasCheckboxDiv.innerHTML = "";
 
+        if (turmas.length === 0) {
+          alert("Nenhuma turma encontrada.");
+        } else {
+          turmas.forEach((turma) => {
+            const checkboxDiv = document.createElement("div");
+            checkboxDiv.style.display = "flex";
 
-            if (turmas.length === 0) {
-                alert("Nenhuma turma encontrada.");
-            } else {
-                turmas.forEach(turma => {
-                    const checkboxDiv = document.createElement('div');
-                    checkboxDiv.style.display = 'flex';
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "idTurmas";
+            checkbox.value = turma.idTurma;
 
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.name = 'idTurmas';
-                    checkbox.value = turma.idTurma;
+            const label = document.createElement("label");
+            label.textContent = turma.serie;
 
-                    const label = document.createElement('label');
-                    label.textContent = turma.serie;
+            checkboxDiv.appendChild(checkbox);
+            checkboxDiv.appendChild(label);
 
-
-                    checkboxDiv.appendChild(checkbox);
-                    checkboxDiv.appendChild(label);
-
-
-                    turmasCheckboxDiv.appendChild(checkboxDiv);
-                });
-            }
+            turmasCheckboxDiv.appendChild(checkboxDiv);
+          });
         }
+      }
 
         document.getElementById('cadastroForm').addEventListener('submit', function (event) {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -190,6 +183,5 @@
             e.target.value = cpf;
         });
     </script>
-</body>
-
+  </body>
 </html>
