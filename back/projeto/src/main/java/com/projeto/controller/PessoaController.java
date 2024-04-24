@@ -19,16 +19,41 @@ import com.projeto.model.Presenca;
 import com.projeto.model.Professor;
 import com.projeto.model.Turma;
 import com.projeto.model.TurmaAlunos;
+import com.projeto.repository.JDBC.AdminRepositoryJDBC;
+import com.projeto.repository.JDBC.AlunoRepositoryJDBC;
 import com.projeto.repository.JDBC.PessoaRepositoryJDBC;
+import com.projeto.repository.JDBC.PresencaRepositoryJDBC;
+import com.projeto.repository.JDBC.ProfessorRepositoryJDBC;
+import com.projeto.repository.JDBC.TurmaAlunosRepositoryJDBC;
+import com.projeto.repository.JDBC.TurmaRepositoryJDBC;
 import com.projeto.Util.ValidaSenha;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PessoaController {
     private final PessoaRepositoryJDBC pessoaRepository;
+    private final AdminRepositoryJDBC adminRepository;
+    private final AlunoRepositoryJDBC alunoRepository;
+    private final ProfessorRepositoryJDBC professorRepository;
+    private final PresencaRepositoryJDBC presencaRepository;
+    private final TurmaRepositoryJDBC turmaRepository;
+    private final TurmaAlunosRepositoryJDBC turmaAlunosRepository;
 
-    public PessoaController(PessoaRepositoryJDBC pessoaRepository) {
+    public PessoaController(PessoaRepositoryJDBC pessoaRepository,
+            AdminRepositoryJDBC adminRepository,
+            AlunoRepositoryJDBC alunoRepository,
+            PresencaRepositoryJDBC presencaRepository,
+            ProfessorRepositoryJDBC professorRepository,
+            TurmaRepositoryJDBC turmaRepository,
+            TurmaAlunosRepositoryJDBC turmaAlunosRepository) {
         this.pessoaRepository = pessoaRepository;
+        this.adminRepository = adminRepository;
+        this.alunoRepository = alunoRepository;
+        this.presencaRepository = presencaRepository;
+        this.professorRepository = professorRepository;
+        this.turmaRepository = turmaRepository;
+        this.turmaAlunosRepository = turmaAlunosRepository;
+
     }
 
     @GetMapping("/")
@@ -147,7 +172,7 @@ public class PessoaController {
             if (!pessoaRepository.verificarCpf(cpf)) {
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
                 Admin admin = new Admin(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
-                pessoaRepository.save(admin);
+                adminRepository.save(admin);
                 pessoaRepository.save(pessoa);
                 return "redirect:/homeAdmin";
             } else {
@@ -176,12 +201,12 @@ public class PessoaController {
             if (!pessoaRepository.verificarCpf(cpf)) {
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
                 Aluno aluno = new Aluno(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
-                pessoaRepository.save(aluno);
+                alunoRepository.save(aluno);
                 pessoaRepository.save(pessoa);
-                Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpf);
+                Integer idAluno = alunoRepository.obterIdAlunoPorCpf(cpf);
                 for (Integer idTurma : idTurmas) {
                     TurmaAlunos turmaAlunos = new TurmaAlunos(idTurma, idAluno);
-                    pessoaRepository.save(turmaAlunos);
+                    turmaAlunosRepository.save(turmaAlunos);
                 }
                 return "redirect:/homeAdmin";
             } else {
@@ -197,7 +222,7 @@ public class PessoaController {
     @ResponseBody
     @GetMapping("/buscarIdTurma")
     public Map<String, Integer> buscarIdTurma(@RequestParam String serie) {
-        int idTurma = pessoaRepository.findIdTurmaBySerie(serie);
+        int idTurma = turmaRepository.findIdTurmaBySerie(serie);
         Map<String, Integer> response = new HashMap<>();
         response.put("idTurma", idTurma);
         return response;
@@ -218,7 +243,7 @@ public class PessoaController {
             if (!pessoaRepository.verificarCpf(cpf)) {
                 Pessoa pessoa = new Pessoa(0, nome, data_nascimento, cpf, tipoUsuario, null);
                 Professor professor = new Professor(0, 0, nome, data_nascimento, cpf, tipoUsuario, null);
-                pessoaRepository.save(professor);
+                professorRepository.save(professor);
                 pessoaRepository.save(pessoa);
                 return "redirect:/homeAdmin";
             } else {
@@ -241,12 +266,12 @@ public class PessoaController {
             @RequestParam String cpf,
             @RequestParam String disciplina,
             HttpSession session, Model model) {
-        if (pessoaRepository.verificarCpfProfessor(cpf)) {
-            int idProfessor = pessoaRepository.obterIdProfessorPorCpf(cpf);
+        if (professorRepository.verificarCpfProfessor(cpf)) {
+            int idProfessor = professorRepository.obterIdProfessorPorCpf(cpf);
             session.setAttribute("cpf", cpf);
             session.setAttribute("idProfessor", idProfessor);
             Turma turma = new Turma(0, serie, idProfessor, disciplina);
-            pessoaRepository.save(turma);
+            turmaRepository.save(turma);
             return "redirect:/homeAdmin";
         } else {
             model.addAttribute("erro", "CPF do professor não encontrado");
@@ -262,7 +287,7 @@ public class PessoaController {
             return "paginaDeErro";
         }
         model.addAttribute("cpfLogado", cpfLogado);
-        List<Turma> turmas = pessoaRepository.findTurmasByProfessorCpf(cpfLogado);
+        List<Turma> turmas = turmaRepository.findTurmasByProfessorCpf(cpfLogado);
         model.addAttribute("turmas", turmas);
         return "exibirTurmasProfessor";
     }
@@ -270,7 +295,7 @@ public class PessoaController {
     @GetMapping("/buscarTurmas")
     public ResponseEntity<List<Turma>> buscarTurmas() {
         try {
-            List<Turma> turmas = pessoaRepository.findAllTurmas();
+            List<Turma> turmas = turmaRepository.findAllTurmas();
             return ResponseEntity.ok().body(turmas);
         } catch (Exception e) {
             System.err.println("Erro ao buscar turmas: " + e.getMessage());
@@ -281,7 +306,7 @@ public class PessoaController {
     @GetMapping("/exibirTurmasAluno")
     public String mostrarTurmasDoAluno(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
-        List<Turma> turmas = pessoaRepository.findTurmasByAlunoCpf(cpfLogado);
+        List<Turma> turmas = turmaRepository.findTurmasByAlunoCpf(cpfLogado);
         model.addAttribute("turmas", turmas);
         return "exibirTurmasAluno";
     }
@@ -293,8 +318,8 @@ public class PessoaController {
 
     @PostMapping("/inserirIdTurma")
     public String inserirIdTurma(@RequestParam int idTurma, Model model) {
-        if (pessoaRepository.existeTurma(idTurma)) {
-            List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
+        if (turmaRepository.existeTurma(idTurma)) {
+            List<Aluno> alunos = alunoRepository.procurarAlunosPorIdTurma(idTurma);
             model.addAttribute("idTurma", idTurma);
             model.addAttribute("alunos", alunos);
             return "confirmarPresenca";
@@ -309,16 +334,16 @@ public class PessoaController {
             @RequestParam Date dataPresenca,
             @RequestParam List<String> situacao,
             Model model) {
-        List<Aluno> alunos = pessoaRepository.procurarAlunosPorIdTurma(idTurma);
+        List<Aluno> alunos = alunoRepository.procurarAlunosPorIdTurma(idTurma);
         if (!alunos.isEmpty() && idTurma > 0 && dataPresenca != null && situacao != null && !situacao.isEmpty()) {
-            if (pessoaRepository.existeChamadaParaData(idTurma, dataPresenca)) {
+            if (presencaRepository.existeChamadaParaData(idTurma, dataPresenca)) {
                 model.addAttribute("erro", "Já existe uma chamada para essa turma na mesma data.");
                 return "paginaDeErro";
             } else {
                 for (Aluno aluno : alunos) {
                     Presenca presenca = new Presenca(0, aluno.getIdAluno(), dataPresenca,
                             situacao.get(alunos.indexOf(aluno)), idTurma);
-                    pessoaRepository.save(presenca);
+                    presencaRepository.save(presenca);
                 }
                 return "redirect:/homeProfessor";
             }
@@ -331,9 +356,9 @@ public class PessoaController {
     @GetMapping("/exibirPresencaAluno")
     public String exibirPresencasDoAluno(Model model, HttpSession session) {
         String cpfLogado = (String) session.getAttribute("cpf");
-        Integer idAluno = pessoaRepository.obterIdAlunoPorCpf(cpfLogado);
+        Integer idAluno = alunoRepository.obterIdAlunoPorCpf(cpfLogado);
         model.addAttribute("idAluno", idAluno);
-        List<Presenca> presencas = pessoaRepository.buscarPresencasDoAlunoAtual(idAluno);
+        List<Presenca> presencas = presencaRepository.buscarPresencasDoAlunoAtual(idAluno);
         model.addAttribute("presencas", presencas);
         return "exibirPresencaAluno";
     }

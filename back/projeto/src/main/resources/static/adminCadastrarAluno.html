@@ -160,8 +160,25 @@
             }
         }
 
+        document.getElementById('cadastroForm').addEventListener('submit', function (event) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            if (checkboxes.length === 0) {
+                event.preventDefault();
+                alert('Por favor, selecione pelo menos uma turma.');
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', carregarTurmas);
+
+
+        document.getElementById('cadastroForm').addEventListener('submit', function (event) {
+            const cpfInput = document.getElementById('cpf');
+            const cpf = cpfInput.value.replace(/\D/g, '');
+            if (cpf.length < 11) {
+                event.preventDefault();
+                alert('O CPF não é válido. Por favor, insira um CPF válido com 11 dígitos.');
+            }
+        });
 
 
         document.getElementById('cpf').addEventListener('input', function (e) {
